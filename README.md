@@ -41,7 +41,7 @@ Use this phase to fetch the source code and prepare the portable deployment pack
 
 1. **Clone the Repository:**
    ```bash
-   git clone <your-private-repo-link>
+   git clone git@github.com:edipzahit1/Jira-Assign-AI.git
    cd jira_assign_ai
    ```
 
