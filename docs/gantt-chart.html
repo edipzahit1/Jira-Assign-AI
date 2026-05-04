@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Architecture - Gantt Chart v2</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+
+      --c-research: #6366f1;
+      --c-arch: #06b6d4;
+      --c-backend: #10b981;
+      --c-nlp: #8b5cf6;
+      --c-frontend: #0ea5e9;
+      --c-testing: #f43f5e;
+      --c-enterprise: #f59e0b;
+      --c-docs: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      padding: 40px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    h1 {
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .meta {
+      text-align: right;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .meta b {
+      color: var(--text-main);
+    }
+
+    .gantt-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      height: 80vh;
+    }
+
+    .gantt-scroll {
+      overflow: auto;
+      height: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 2200px;
+    }
+
+    /* Headers */
+    thead th {
+      padding: 12px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--border);
+      background: #fbfbfb;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .task-col {
+      width: 280px;
+      text-align: left;
+      padding-left: 24px;
+      position: sticky;
+      left: 0;
+      background: #fbfbfb;
+      z-index: 30;
+      border-right: 2px solid var(--border);
+    }
+
+    .week-header {
+      border-left: 1px solid var(--border);
+    }
+
+    /* Rows */
+    tbody tr {
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    td {
+      height: 48px;
+      position: relative;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .task-name-cell {
+      padding-left: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      position: sticky;
+      left: 0;
+      background: white;
+      z-index: 10;
+      border-right: 1px solid var(--border);
+    }
+
+    .task-desc {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* Bars */
+    .bar {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 24px;
+      border-radius: 6px;
+      z-index: 2;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
+      border-radius: inherit;
+    }
+
+    /* Column grid lines */
+    .grid-cell {
+      border-left: 1px solid #f1f5f9;
+      width: 60px;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    /* Milestones */
+    .milestone {
+      width: 12px;
+      height: 12px;
+      background: #0f172a;
+      transform: rotate(45deg);
+      margin: 0 auto;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .milestone-label {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%) rotate(-45deg);
+      white-space: nowrap;
+      font-size: 10px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .section-header td {
+      background: #f1f5f9;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #475569;
+      height: 32px;
+      position: sticky;
+      top: 40px;
+      z-index: 15;
+      border-bottom: 2px solid var(--border);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Jira Assign AI Project Roadmap</h1>
+        <div class="subtitle">System Scaling & Enterprise Integration Timeline (Feb - May 2026)</div>
+      </div>
+      <div class="meta">
+        Duration: <b>12 Weeks</b> &nbsp; | &nbsp;
+        End Date: <b>May 15, 2026</b><br>
+        Lead Dev: <b>Edip Zahit Güney</b>
+      </div>
+    </header>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-research)"></div>Planning
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-arch)"></div>Architecture
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-backend)"></div>Backend
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-nlp)"></div>NLP / AI
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-frontend)"></div>Frontend
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-testing)"></div>QA
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-enterprise)"></div>Scaling
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-docs)"></div>Docs
+      </div>
+    </div>
+
+    <div class="gantt-card">
+      <div class="gantt-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="task-col">Task & Milestones</th>
+              <th colspan="2" class="week-header">Week 1<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Feb 20 - Feb 26</span></th>
+              <th colspan="2" class="week-header">Week 2<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Feb 27 - Mar 5</span></th>
+              <th colspan="2" class="week-header">Week 3<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Mar 6 - Mar 12</span></th>
+              <th colspan="2" class="week-header">Week 4<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Mar 13 - Mar 19</span></th>
+              <th colspan="2" class="week-header">Week 5<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Mar 20 - Mar 26</span></th>
+              <th colspan="2" class="week-header">Week 6<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Mar 27 - Apr 2</span></th>
+              <th colspan="2" class="week-header">Week 7<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Apr 3 - Apr 9</span></th>
+              <th colspan="2" class="week-header">Week 8<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Apr 10 - Apr 16</span></th>
+              <th colspan="2" class="week-header">Week 9<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Apr 17 - Apr 23</span></th>
+              <th colspan="2" class="week-header">Week 10<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">Apr 24 - Apr 30</span></th>
+              <th colspan="2" class="week-header">Week 11<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">May 1 - May 7</span></th>
+              <th colspan="2" class="week-header">Week 12<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">May 8 - May 15</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-header">
+              <td colspan="25">Phase 01 & 02: Core Foundations & AI Intelligence</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">Jira API & Data Research<span class="task-desc">Permission Scoping & SDK
+                  Analysis</span></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-research); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Backend & DB Infrastructure<span class="task-desc">FastAPI & SQLAlchemy
+                  Setup</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-arch); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">NLP Embedding Logic<span class="task-desc">Sentence-Transformers
+                  Integration</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-nlp); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">5-Factor Scoring Engine<span class="task-desc">Complexity & Capacity
+                  Ranking</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 300%; background: var(--c-backend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Credential Encryption<span class="task-desc">Symmetric AES
+                  Implementation</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-backend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Phase 03: UI/UX & MVP Delivery</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">React Dashboard Development<span class="task-desc">Interactive Recommendation
+                  UI</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 300%; background: var(--c-frontend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">MVP Pilot Integration<span class="task-desc">Jira Real-World Testing</span>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell desktop-marker">
+                <div class="bar" style="width: 200%; background: var(--c-testing); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Phase 04: Production Hardening</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">pgvector Scaling<span class="task-desc">Postgres Migration for Large
+                  Data</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-enterprise); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">HttpOnly Cookie Hardening<span class="task-desc">XSS & CSRF Prevention</span>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-arch); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Production Secret Mgmt<span class="task-desc">Startup Env Validation
+                  Logic</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-backend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Nginx Proxy & Containerization<span class="task-desc">HSTS, SSL & Docker
+                  Compose</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-arch); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Phase 05: Documentation & Final Delivery</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">Technical Docs & User Manual<span class="task-desc">System Flow & Dev
+                  Notes</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-docs); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Final Handover & Demo<span class="task-desc">Project Closure &
+                  Presentation</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 100%; background: var(--c-docs); left: 10px;"></div>
+              </td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Milestones</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">MVP Handover</td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="milestone" style="background:#4f46e5">
+                  <div class="milestone-label" style="color:#4f46e5">MVP COMPLETE (Apr 9)</div>
+                </div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Final Delivery</td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="milestone" style="background:#10b981">
+                  <div class="milestone-label" style="color:#10b981">FINAL (May 15)</div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

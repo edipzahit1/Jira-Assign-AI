@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  /* ── Dark theme: black / ink-black / prussian-blue / charcoal-blue / lavender ── */
+  :root {
+    --background: 0 0% 0%;              /* black #000000 */
+    --foreground: 250 21% 83%;          /* lavender #ccc9dc */
+    --card: 206 46% 9%;                 /* ink-black #0c1821 */
+    --card-foreground: 250 21% 83%;     /* lavender */
+    --popover: 216 41% 18%;             /* prussian-blue #1b2a41 */
+    --popover-foreground: 250 21% 83%;
+    --primary: 250 21% 83%;             /* lavender — interactive highlight */
+    --primary-foreground: 206 46% 9%;   /* ink-black */
+    --secondary: 216 41% 18%;           /* prussian-blue #1b2a41 */
+    --secondary-foreground: 250 21% 83%;
+    --muted: 216 41% 18%;              /* prussian-blue */
+    --muted-foreground: 230 18% 54%;   /* mid lavender-charcoal */
+    --accent: 208 30% 28%;             /* charcoal-blue #324a5f */
+    --accent-foreground: 250 21% 83%;
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 250 21% 83%;
+    --border: 208 30% 28%;             /* charcoal-blue */
+    --input: 216 41% 14%;              /* between ink-black and prussian-blue */
+    --ring: 250 21% 70%;               /* lavender slightly muted */
+  }
+
+  /* ── Light theme: lavender-blush / dust-grey / lilac-ash / muted-teal ── */
+  .light {
+    --background: 0 59% 94%;           /* lavender-blush #f9e7e7 */
+    --foreground: 0 7% 18%;            /* dark dust-grey derived */
+    --card: 0 11% 86%;                 /* dust-grey #ded6d6 */
+    --card-foreground: 0 7% 18%;
+    --popover: 0 7% 81%;               /* dust-grey-2 #d2cbcb */
+    --popover-foreground: 0 7% 18%;
+    --primary: 156 9% 53%;             /* muted-teal #7d938a */
+    --primary-foreground: 0 59% 97%;   /* near-white lavender-blush */
+    --secondary: 0 7% 81%;             /* dust-grey-2 */
+    --secondary-foreground: 0 7% 18%;
+    --muted: 0 7% 81%;                 /* dust-grey-2 */
+    --muted-foreground: 332 7% 58%;    /* lilac-ash #ada0a6 */
+    --accent: 0 7% 81%;
+    --accent-foreground: 0 7% 18%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 59% 97%;
+    --border: 332 7% 65%;              /* lilac-ash */
+    --input: 0 11% 83%;                /* between dust-grey and dust-grey-2 */
+    --ring: 156 9% 53%;                /* muted-teal */
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ── Custom Scrollbar Styles ── */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 5px;
+  border: 2px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted)) hsl(var(--background));
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}

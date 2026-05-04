@@ -1,0 +1,30 @@
+# Environment & Secrets
+.env
+*.db
+atlasapikey.txt
+
+# Docker Binaries (The big files!)
+*.tar
+
+# OS/IDEs
+.DS_Store
+.vscode/
+__pycache__/
+node_modules/
+
+# Local Data
+db_data/
+migration_debug.log
+
+# Python build artifacts
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+# Frontend build artifacts
+frontend/dist/
+frontend/stats.html
+# Local environment/IDE
+.idea/
+.project
+.pydevproject

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.env
+.git
+.gitignore
+db_data/
+migration_debug.log
+crash_debug.txt
+archive/
+*.log
+venv/
+.venv/

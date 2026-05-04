@@ -1,0 +1,1078 @@
+\documentclass[12pt, a4paper]{article}
+
+% ── Packages ──
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{tcolorbox}
+\usepackage{float}
+
+% ── Color Definitions ──
+\definecolor{primaryblue}{HTML}{3B82F6}
+\definecolor{darkbg}{HTML}{1E293B}
+\definecolor{codebg}{HTML}{F1F5F9}
+\definecolor{warnamber}{HTML}{F59E0B}
+\definecolor{successgreen}{HTML}{22C55E}
+\definecolor{dangered}{HTML}{EF4444}
+
+% ── Hyperlink Setup ──
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryblue,
+    urlcolor=primaryblue,
+    citecolor=primaryblue
+}
+
+% ── Code Listing Style ──
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{gray!40},
+    tabsize=2,
+    showstringspaces=false,
+    captionpos=b,
+    numbers=none
+}
+
+% ── Section Formatting ──
+\titleformat{\section}{\Large\bfseries\color{darkbg}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\large\bfseries\color{darkbg}}{}{0em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{darkbg}}{}{0em}{}
+
+% ── Header / Footer ──
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{gray}{Jira Assign AI — Production Changes Report}}
+\fancyhead[R]{\small\textcolor{gray}{\today}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Colored Box Environment ──
+\newtcolorbox{infobox}{
+    colback=codebg,
+    colframe=gray!60,
+    arc=2mm
+}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── Title Page ──
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+
+    {\Huge\bfseries Jira Assign AI\\[0.3cm]}
+    {\LARGE\color{primaryblue} Production Changes Report\\[1cm]}
+
+    \rule{0.6\textwidth}{1pt}\\[1.5cm]
+
+    {\large
+    This document describes all architectural and algorithmic changes
+    applied to the Jira Assign AI system as part of its transition from
+    the Minimum Viable Product (MVP) stage to a production-ready deployment.\\[2cm]
+    }
+
+    \begin{tabular}{rl}
+        \textbf{Project:} & Jira Assign AI — Intelligent Task Routing System \\
+        \textbf{Author:}  & Edip Zahit Güney \\
+        \textbf{Date:}    & March 2026 \\
+    \end{tabular}
+
+    \vfill
+    {\small\color{gray} Internal Document — Jira Assign AI Production Deployment}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Executive Summary}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{The Problem}
+
+Manual task assignment in Jira is slow, biased, and ignores developer capacity or hidden expertise. Project managers waste hours reading ticket descriptions to determine who should handle each issue, leading to uneven workload distribution and suboptimal use of team knowledge.
+
+\subsection{The Solution}
+
+Jira Assign AI is an intelligent, context-aware task routing system that ranks every team member from 0 to 100 for any given issue. Rather than relying on round-robin rotation or rigid \textit{If-This-Then-That} rules, the system combines a rules engine with an Explainable AI (XAI) scoring layer — producing ranked recommendations that reflect each developer's actual expertise, current workload, reliability history, and recent activity.
+
+\subsection{Competitive Positioning}
+
+Existing tools typically offer simple round-robin rotation or static label-based routing. Cloud-based webhook solutions introduce data privacy concerns that are unacceptable in corporate environments. Jira Assign AI's hybrid approach — hard constraint filtering followed by a five-factor soft optimization engine — operates entirely on-premise with no data leaving the corporate network, while providing significantly more nuanced recommendations than any rule-based alternative.
+
+\subsection{Production Upgrade Overview}
+
+The Jira Assign AI system was initially developed as a fully functional MVP capable of demonstrating intelligent, NLP-powered task assignment on a single developer workstation. While the core algorithm, scoring engine, and user interface were complete and operational, several architectural limitations prevented the system from being deployed on a shared corporate intranet or scaled to enterprise-grade Jira installations.
+
+This document details the production improvements organized into six areas:
+
+\begin{enumerate}
+    \item \textbf{Backend Logic Improvements} — Incremental synchronization and time-decay scoring
+    \item \textbf{Containerization \& Deployment} — Docker, Nginx, and automated sync scheduling
+    \item \textbf{Enterprise-Scale Architecture} — PostgreSQL migration and tiered sync
+    \item \textbf{Multi-Project \& Authentication} — JWT auth, multi-project support, project creation wizard, and scoring engine refinements
+    \item \textbf{Batch Migration Script} — One-time standalone script for large historical dataset import
+    \item \textbf{Security Hardening \& Production Safeguards} — HttpOnly cookies, enforced secrets, Nginx security headers, and admin recovery tooling
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\caption{Production Changes Overview}
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Change} & \textbf{Description} \\
+\hline
+Incremental Sync         & Upsert strategy replacing full wipe-and-refetch \\
+Time-Decay Filtering     & Exponential decay weighting on scoring engine \\
+Docker \& Nginx          & Full stack containerization and reverse proxy \\
+Automated Scheduler      & Nightly sync + manual toggle in Settings UI \\
+PostgreSQL + pgvector    & Enterprise database with native vector search \\
+Three-Tier Sync Schedule & Daily, weekly, and monthly sync tiers \\
+JWT Authentication       & Login system with bcrypt and bearer tokens \\
+Multi-Project Support    & Per-project isolation of all data and config \\
+Project Creation Wizard  & Guided multi-step setup for new projects \\
+Scoring Engine Refinements & Urgency removed, Activity reframed, dynamic priority mapping \\
+Batch Migration Script   & Standalone tool for initial large-scale data import \\
+Frontend Ticket Cache    & 10-minute TTL client-side persistence for responsiveness \\
+Brute-Force Protection   & 5 tries/minute rate limiting on login endpoint \\
+Security Hardening       & HttpOnly cookies, enforced secrets, Nginx headers, admin CLI \\
+\hline
+\end{tabularx}
+\end{table}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Technical Stack \& Architecture}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Backend — Python / FastAPI}
+
+Python is the natural choice for the backend due to the heavy mathematical workload at the core of the scoring engine. Cosine similarity matrix computation and the NLP library ecosystem — particularly \texttt{sentence-transformers} and \texttt{pgvector} — require Python's scientific computing stack. FastAPI provides asynchronous request handling with automatic OpenAPI documentation generation.
+
+\subsection{Frontend — React / Node / TypeScript}
+
+The React/TypeScript frontend creates a reactive, interactive dashboard capable of rendering the AI's complex output data — including radar charts for per-developer scoring breakdowns, real-time sync progress indicators, and multi-project navigation. TypeScript enforces type safety across the API contract boundary.
+
+\subsection{Database — PostgreSQL + pgvector}
+
+PostgreSQL is used as the production database for enterprise-grade reliability, concurrent access, and transactional integrity. The \texttt{pgvector} extension adds a native \texttt{vector} column type and HNSW indexing, enabling database-level cosine similarity search. This bypasses the RAM limitations and concurrency issues of local SQLite and eliminates the need to load embedding matrices into application memory.
+
+\subsection{Nginx Reverse Proxy}
+
+Nginx acts as the single entry point to the system. It serves the compiled React SPA as static files, proxies all \texttt{/api/} requests to the FastAPI backend, and provides an additional security layer at the network boundary.
+
+\subsection{Docker Containerization}
+
+Both the frontend and backend are fully containerized and managed by Docker Compose, enabling repeatable, stable deployments in corporate environments with a single \texttt{docker compose up} command.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Security, Privacy \& Enterprise Readiness}
+% ══════════════════════════════════════════════════════════════════════════════
+
+The Jira Assign AI is architected specifically for enterprise environments where data privacy, corporate compliance, and network security are non-negotiable.
+
+\subsection{JWT Authentication}
+
+Administrative access to the application is protected by JWT-based authentication. Users must log in via a secure portal, and an admin user is seeded via environment variables at startup. Bcrypt is used for secure password hashing.
+
+\subsection{Multi-Project Isolation}
+
+All data — including credentials, task caches, team rules, and user assignments — is scoped by a \texttt{project\_key}. This allows a single deployment to manage multiple distinct Jira projects with complete data isolation.
+
+\subsection{Jira Server \& Data Center (On-Premise) Native}
+
+Designed to operate entirely within a locked-down corporate perimeter. No data leaves the network.
+
+\subsection{Absolute Data Sovereignty}
+
+All NLP inference (\texttt{all-MiniLM-L6-v2}) occurs locally on the server. No ticket data ever touches third-party AI APIs such as OpenAI.
+
+\subsection{Cryptographic Credential Management}
+
+Jira API tokens and PATs are encrypted using \texttt{cryptography.fernet} before being stored in the database.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{The Core Algorithm: The 5-Factor Scoring Engine}
+% ══════════════════════════════════════════════════════════════════════════════
+
+The scoring engine evaluates users against new issues through a hybrid two-phase approach.
+
+\subsection{Phase 1: Hard Constraints (Short-Circuit)}
+
+Filters users based on project-specific Team Rules. For example, a ticket labelled \texttt{backend} will exclude all users not assigned to the Backend Team before any soft scoring begins.
+
+\subsection{Phase 2: Soft Optimization — The Five Criteria}
+
+\begin{enumerate}
+    \item \textbf{Expertise Score (Semantic Similarity):} Average cosine similarity of the top-5 closest historical tickets in the developer's resolved issue history, weighted by time-decay.
+    \item \textbf{Capacity Score (Workload):} Penalizes users with high task counts or story point totals relative to the team average.
+    \item \textbf{Reliability Score (Success Rate):} Based on on-time resolution rate and low reopen rate, decay-weighted to prioritize recent performance.
+    \item \textbf{Domain Score (Category Experience):} Counts label matches against the developer's historical tickets, with each match contributing its decay factor rather than a flat count.
+    \item \textbf{Momentum Score (Recent Activity):} Measures presence consistency over the last 10 working days — rewards regular contribution over sporadic bursts.
+\end{enumerate}
+
+\begin{infobox}
+\textbf{Note:} Criterion 6 (Urgency/Velocity) from the MVP was removed to improve scoring accuracy. Urgency is a property of the task, not the developer — every candidate received an identical urgency score, contributing zero differentiation to the ranking. Ticket priority is still displayed in the UI as context but no longer participates in the scoring calculation. See Section~\ref{sec:scoring-refinements} for full details.
+\end{infobox}
+
+\subsection{Strategy Presets}
+
+Each project selects a strategy preset that distributes weight across the five criteria:
+
+\begin{table}[H]
+\centering
+\caption{Default Strategy Preset Weights}
+\begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+\hline
+\textbf{Criterion} & \textbf{BALANCED} & \textbf{SPEED} & \textbf{QUALITY} & \textbf{GROWTH} \\
+\hline
+Expertise        & 35\% & 10\% & 45\% & 5\%  \\
+Workload         & 30\% & 45\% & 10\% & 45\% \\
+Success Rate     & 5\%  & 5\%  & 15\% & 0\%  \\
+Category Exp.    & 15\% & 5\%  & 25\% & 5\%  \\
+Recent Activity  & 15\% & 35\% & 5\%  & 45\% \\
+\hline
+\end{tabularx}
+\end{table}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Advanced Scoring: Time-Decay Filtering}
+% ══════════════════════════════════════════════════════════════════════════════
+
+In production, a developer's expertise from 2017 is often far less relevant than their work from 2024. The scoring engine applies an exponential time-decay multiplier to historical issue scores so that recent mastery dominates over stale expertise.
+
+\subsection{The Decay Formula}
+
+\[
+\text{Score} = \text{Base\_Similarity} \times e^{-\lambda \cdot \Delta t}
+\]
+
+Where $\Delta t$ is the age of the resolved issue in years and $\lambda$ controls the rate of decay. A floor of 0.30 is applied to ensure that deep historical expertise in a specialized domain is never completely zeroed out — a developer with many old tickets in a niche area still retains 30\% of that signal.
+
+\begin{lstlisting}[language=Python, caption={Time-decay formula — scoring\_engine.py}]
+@staticmethod
+def _calculate_decay_factor(resolved_at) -> float:
+    age_years = (today - resolved_date).days / 365.0
+    decay = math.exp(-LAMBDA * age_years)
+    return max(0.3, decay)
+\end{lstlisting}
+
+\begin{table}[H]
+\centering
+\caption{Decay Factor by Issue Age}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Issue Age} & \textbf{Decay Factor} & \textbf{Effect} \\
+\hline
+Today         & 1.00 & Full weight \\
+1 year ago    & 0.85 & Slight reduction \\
+2 years ago   & 0.70 & Moderate reduction \\
+3 years ago   & 0.55 & Significant reduction \\
+5+ years ago  & 0.30 & Floor (preserves domain signal) \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Affected Scoring Factors}
+
+The decay multiplier is applied to three of the five criteria:
+
+\begin{enumerate}
+    \item \textbf{Expertise Score:} Both Jaccard tag similarity and NLP semantic similarity are weighted by each historical task's decay factor using a custom \texttt{\_decay\_weighted\_top\_k\_similarity()} method.
+    \item \textbf{Category Experience:} Each matching task contributes its decay factor instead of a flat count — five recent matches score higher than seven old matches.
+    \item \textbf{Success Rate:} On-time and quality rates are decay-weighted so recent performance dominates over historical failures.
+\end{enumerate}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Performance \& Sync Strategy}
+% ══════════════════════════════════════════════════════════════════════════════
+
+To handle hundreds of thousands of tickets efficiently, the system uses a multi-tier sync engine designed to minimize API calls, NLP re-computation, and database downtime.
+
+\subsection{Incremental Upsert}
+
+Unlike the MVP's wipe-and-refetch approach, the production system only fetches issues updated since the last sync date. New issues are inserted; existing issues are updated in-place. The database is never empty during a sync window.
+
+\subsection{Three-Tier Sync Schedule}
+
+\begin{table}[H]
+\centering
+\caption{Three-Tier Sync Schedule}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Tier} & \textbf{Frequency} & \textbf{Scope} \\
+\hline
+Nightly & Every night 02:00   & Incremental: issues updated in last 24 hours \\
+Weekly  & Every Sunday 03:00  & Partial: last 3 months — catches retroactive edits and relabeling \\
+Monthly & 1st of each month   & Full resync: entire history — catches deletions and reorganizations \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Automated Scheduler}
+
+An integrated background scheduler (via APScheduler) handles the three sync tiers automatically based on per-project configuration. A manual toggle in the Settings UI allows administrators to pause or resume the scheduler without modifying server configuration.
+
+\subsection{Frontend Ticket Caching (10-Minute TTL)}
+
+To further reduce unnecessary Jira API load and improve the responsiveness of the Dashboard, a client-side caching layer was implemented for fetched tickets.
+
+\subsubsection{The Problem}
+In the MVP, every time the user navigated to the Dashboard or switched projects, a fresh network request was made to the \texttt{/api/unassigned} endpoint. Even if the data had been fetched seconds prior, the application would show a loading state and re-fetch the entire ticket list, causing unnecessary delay and server load during frequent project switching.
+
+\subsubsection{The Solution}
+The frontend now implements a \textbf{10-minute Time-To-Live (TTL)} cache using \texttt{localStorage}. 
+
+\begin{itemize}
+    \item \textbf{Project-Scoped:} Each project's ticket list is cached independently using a key format: \texttt{issues_cache_\{project_key\}}.
+    \item \textbf{Persistence:} Because it uses \texttt{localStorage}, the cache persists across page refreshes and browser restarts.
+    \item \textbf{Automatic Invalidation:} Each cache entry includes a timestamp. If a request is made and the cached data is older than 10 minutes, the application automatically triggers a fresh background fetch and updates the cache.
+    \item \textbf{Manual Override:} Any manual sync trigger (Incremental or Full) immediately invalidates the frontend cache to ensure the user sees the latest results from the backend.
+\end{itemize}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Database Schema (PostgreSQL)}
+% ══════════════════════════════════════════════════════════════════════════════
+
+The system uses a normalized relational schema optimized for enterprise scale, multi-project isolation, and high-performance vector search.
+
+\begin{itemize}
+    \item \textbf{\texttt{jira\_users}} — Global identity registry for Jira user accounts to ensure consistent identification across multiple projects.
+    \item \textbf{\texttt{portal\_users}} — Local administrator accounts for the portal. Stores hashed passwords (bcrypt) and provides the foundation for JWT session management.
+    \item \textbf{\texttt{projects}} — The central multi-project registry. Stores Jira credentials (Fernet-encrypted), synchronization state, active strategy preset, and per-project sync schedules.
+    \item \textbf{\texttt{task\_cache}} — The primary data store for historical issues. Contains metadata, reliability metrics (\texttt{completed\_on\_time}, \texttt{reopen\_count}), and the \texttt{vector(384)} embeddings used for similarity matching.
+    \item \textbf{\texttt{developer\_activity\_cache}} — Caches recent worklog patterns and leave dates in JSON format to accelerate the "Recent Activity" scoring calculations and leave detection.
+    \item \textbf{\texttt{user\_teams}} — Maps Jira users to specific project teams. Supports a \texttt{GLOBAL} project key for users who participate across the entire organization.
+    \item \textbf{\texttt{team\_rules}} — Stores label-to-team hard constraints per project, used to filter candidates in Phase 1 before soft scoring begins.
+    \item \textbf{\texttt{advanced\_settings}} — Stores project-specific engine constants, including granular weight overrides and scoring saturation thresholds.
+    \item \textbf{\texttt{settings}} — A global key-value store for application-wide configurations that do not belong to a specific project.
+\end{itemize}
+
+\subsection{Relationship Design \& Integrity}
+
+All tables referencing project data carry a \texttt{project\_key} foreign key with \textbf{CASCADE DELETE} enabled. This ensures absolute data isolation; removing a project automatically and cleanly purges all its associated historical tasks, team assignments, rules, and vector embeddings from the system without orphan records.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Backend Logic Improvements}
+% ══════════════════════════════════════════════════════════════════════════════
+
+This section covers algorithmic improvements that require no infrastructure changes. These modifications enhance the accuracy and efficiency of the system's core data pipeline and scoring engine.
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Incremental Sync}
+% ──────────────────────────────────────────────────────────────────────────────
+
+The \texttt{/api/sync} endpoint was converted from a destructive full-wipe strategy to an incremental upsert, with a preserved full re-sync option for periodic maintenance.
+
+\subsubsection{The Problem}
+
+The MVP's synchronization endpoint deleted the entire \texttt{task\_cache} table on every call and re-fetched all historical issues from Jira. For a project with 5{,}000+ resolved issues, this meant:
+
+\begin{itemize}
+    \item Every sync required re-downloading thousands of issues via paginated API calls
+    \item Every embedding vector had to be re-computed by the NLP model — expensive CPU time
+    \item The database was empty during the sync window, rendering the system unusable
+    \item Jira API rate limits were hit frequently on large projects
+\end{itemize}
+
+\subsubsection{The Solution}
+
+The sync endpoint now operates in two modes:
+
+\begin{enumerate}
+    \item \textbf{Incremental Sync (Default):} Reads the \texttt{last\_sync\_date} from the \texttt{Setting} table, constructs a JQL query \texttt{updated >= "YYYY-MM-DD"}, and fetches only issues modified since the last sync. New issues are inserted; existing issues are updated in-place (upsert).
+
+    \item \textbf{Full Re-Sync (\texttt{?full=true}):} Preserves the original wipe-and-refetch behavior for periodic maintenance, recommended weekly or monthly.
+\end{enumerate}
+
+\subsubsection{Implementation Details}
+
+\textbf{New JQL Method:}
+
+\begin{lstlisting}[language=Python, caption={Incremental JQL Filter — jira\_client.py}]
+def get_issues_updated_since(self, since_date: str):
+    jql = (
+        f'project = {self.project_key} '
+        f'AND updated >= "{since_date}" '
+        f'ORDER BY updated DESC'
+    )
+    # Fetches only recently changed issues via pagination
+\end{lstlisting}
+
+\textbf{Upsert Strategy:}
+
+For each fetched issue, the system queries the database by \texttt{issue\_key}. If the record exists, it is updated in-place; if not, a new record is inserted. This means:
+
+\begin{itemize}
+    \item Unchanged issues are never touched — no I/O or NLP re-computation
+    \item Modified issues have their fields and embeddings refreshed
+    \item New issues are appended to the cache
+    \item The database is \textbf{never empty} during sync — always queryable
+\end{itemize}
+
+\textbf{Cold-Start Safety:} If no \texttt{last\_sync\_date} exists (first-ever sync), the endpoint automatically falls back to a full sync.
+
+\textbf{Enhanced API Response:}
+
+\begin{lstlisting}[caption={Enriched sync response payload}]
+{
+  "sync_mode": "incremental",
+  "fetched_from_jira": 42,
+  "inserted": 15,
+  "updated": 27,
+  "skipped": 0,
+  "time_seconds": 3.2,
+  "last_sync_date": "2026-03-25"
+}
+\end{lstlisting}
+
+\subsubsection{Frontend Changes}
+
+The Settings page now displays two sync actions:
+
+\begin{itemize}
+    \item A blue primary button labeled ``\textbf{Incremental Sync}'' for daily use
+    \item An amber outlined secondary button labeled ``\textbf{Full Re-Sync}'' for periodic maintenance
+\end{itemize}
+
+Each button triggers a mode-specific confirmation modal. After completion, the UI shows detailed statistics including mode, new/updated counts, and duration.
+
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Time-Decay Filtering}
+% ──────────────────────────────────────────────────────────────────────────────
+
+A time-decay multiplier was added to the scoring engine so that recent work outweighs older historical data when calculating developer expertise and reliability.
+
+\subsubsection{The Problem}
+
+The MVP scoring engine treated all historical tasks equally. A developer who solved a WebSocket performance issue 7 years ago received the same expertise credit as a developer who solved the same type of issue last month. In rapidly evolving codebases, this leads to stale recommendations.
+
+\subsubsection{The Decay Formula}
+
+The engine applies exponential decay using the formula:
+
+\[
+\text{Score} = \text{Base\_Similarity} \times e^{-\lambda \cdot \Delta t}
+\]
+
+Where $\Delta t$ is the age of the issue in years and $\lambda$ is the decay constant. A floor of 0.30 ensures deep historical expertise is never entirely discarded.
+
+\begin{lstlisting}[language=Python, caption={Time-decay formula — scoring\_engine.py}]
+@staticmethod
+def _calculate_decay_factor(resolved_at) -> float:
+    age_years = (today - resolved_date).days / 365.0
+    decay = math.exp(-LAMBDA * age_years)
+    return max(0.3, decay)
+\end{lstlisting}
+
+\begin{table}[H]
+\centering
+\caption{Decay Factor by Issue Age}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Issue Age} & \textbf{Decay Factor} & \textbf{Effect} \\
+\hline
+Today         & 1.00 & Full weight \\
+1 year ago    & 0.85 & Slight reduction \\
+2 years ago   & 0.70 & Moderate reduction \\
+3 years ago   & 0.55 & Significant reduction \\
+5+ years ago  & 0.30 & Floor (preserves domain signal) \\
+\hline
+\end{tabular}
+\end{table}
+
+The floor of 0.30 ensures that deep historical expertise is never completely zeroed out — a developer with many old tickets in a specialized domain still retains 30\% of that signal.
+
+\subsubsection{Affected Scoring Factors}
+
+The decay multiplier was applied to three criteria:
+
+\begin{enumerate}
+    \item \textbf{Expertise Score:} Both Jaccard tag similarity and NLP semantic similarity are weighted by each historical task's decay factor using a custom \texttt{\_decay\_weighted\_top\_k\_similarity()} method.
+    \item \textbf{Category Experience:} Each matching task contributes its decay factor instead of a flat count — 5 recent matches score higher than 7 old matches.
+    \item \textbf{Success Rate:} On-time and quality rates are decay-weighted so recent performance dominates over historical failures.
+\end{enumerate}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Containerization \& Deployment}
+% ══════════════════════════════════════════════════════════════════════════════
+
+This section covers the transition from a local development setup to a containerized, production-ready deployment startable with a single command on any server.
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Docker \& Nginx}
+% ──────────────────────────────────────────────────────────────────────────────
+
+The full stack was containerized behind an Nginx reverse proxy using Docker Compose.
+
+\subsubsection{Architecture}
+
+\begin{enumerate}
+    \item \textbf{Backend Container} (\texttt{jira-ai-backend}) — \texttt{python:3.11-slim} base, multi-stage build with the \texttt{all-MiniLM-L6-v2} NLP model baked in at build time. No internet required at runtime. Runs \texttt{uvicorn main:app} on internal port 8000.
+
+    \item \textbf{Frontend Container} (\texttt{jira-ai-frontend}) — Multi-stage build: \texttt{node:20-alpine} compiles the React SPA, \texttt{nginx:alpine} serves the output and acts as reverse proxy on host port 80.
+\end{enumerate}
+
+\subsubsection{Nginx Configuration}
+
+\begin{lstlisting}[caption={nginx.conf — Reverse proxy configuration}]
+server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://backend:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 30s;
+        proxy_send_timeout 300s;
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Deployment Commands}
+
+\begin{lstlisting}[language=bash, caption={Production deployment workflow}]
+docker compose build     # ~5 minutes on first run
+docker compose up -d     # start in detached mode
+docker compose logs -f   # view logs
+docker compose down      # stop
+\end{lstlisting}
+
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Automated Nightly Sync \& Manual Scheduler Toggle}
+% ──────────────────────────────────────────────────────────────────────────────
+
+The \texttt{/api/sync} endpoint was configured to run automatically on a nightly schedule, eliminating manual sync triggers. A manual scheduler toggle was also added to the Settings UI — a toggle button with a confirmation modal and persistent state in the database — allowing the administrator to pause or resume scheduled sync without modifying server configuration.
+
+\textbf{Nightly incremental sync} runs at 02:00 AM server time. \textbf{Weekly full re-sync} runs every Sunday at 03:00 AM. Within the Docker deployment, a lightweight scheduler container handles this at the infrastructure level using \texttt{mcuadros/ofelia}.
+
+\begin{lstlisting}[language=bash, caption={Linux cron entries}]
+0 2 * * *   curl -s -X POST http://localhost:8000/api/sync
+0 3 * * 0   curl -s -X POST http://localhost:8000/api/sync?full=true
+\end{lstlisting}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Enterprise-Scale Architecture}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{infobox}
+\textbf{Context:} A large enterprise Jira installation — for example, 7+ years of data on Jira Premium Server at a defense or aerospace company — presents challenges fundamentally different from a typical team project.
+\end{infobox}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{PostgreSQL + pgvector Migration}
+% ──────────────────────────────────────────────────────────────────────────────
+
+SQLite was replaced with PostgreSQL extended by the pgvector plugin, enabling native, indexed vector similarity search inside the database engine.
+
+\subsubsection{Why SQLite Breaks at Scale}
+
+\begin{itemize}
+    \item \textbf{Concurrency:} File-level locking causes concurrent API requests to queue and serialize.
+    \item \textbf{Memory:} Loading 200{,}000+ 384-dimensional vectors into RAM via NumPy consumes 2--3 GB per request.
+    \item \textbf{No Native Vector Search:} Every similarity query is a full table scan. PostgreSQL's pgvector provides HNSW indexes reducing search from O(n) to O(log n).
+\end{itemize}
+
+\begin{lstlisting}[language=SQL, caption={pgvector similarity query}]
+SELECT issue_key, assignee,
+       1 - (embedding <=> $1) AS cosine_similarity
+FROM task_cache
+WHERE assignee = $2
+ORDER BY embedding <=> $1
+LIMIT 5;
+\end{lstlisting}
+
+Vectors never leave the database — the application only receives the top matches, eliminating RAM spikes entirely.
+
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Three-Tier Sync Schedule}
+% ──────────────────────────────────────────────────────────────────────────────
+
+\begin{table}[H]
+\centering
+\caption{Three-Tier Sync Schedule}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Tier} & \textbf{Frequency} & \textbf{Scope} \\
+\hline
+Nightly & Every night 02:00   & Incremental: issues updated in last 24 hours \\
+Weekly  & Every Sunday 03:00  & Partial: last 3 months — catches retroactive edits and relabeling \\
+Monthly & 1st of each month   & Full resync: entire history — catches deletions and reorganizations \\
+\hline
+\end{tabularx}
+\end{table}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Multi-Project \& Authentication}
+% ══════════════════════════════════════════════════════════════════════════════
+
+This section introduces user authentication, multi-project support, a guided onboarding flow, and significant refinements to the scoring engine based on real-world usage feedback.
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{JWT Authentication}
+% ──────────────────────────────────────────────────────────────────────────────
+
+JWT-based authentication was added to protect all application endpoints. The system uses a single shared account model — appropriate for a corporate intranet tool used by a small team of project managers. No open registration endpoint exists.
+
+\subsubsection{Account Seeding}
+
+The administrator account is created automatically on first startup from environment variables. If no users exist in the database, the backend reads \texttt{ADMIN\_USERNAME} and \texttt{ADMIN\_PASSWORD} from the environment, hashes the password using \texttt{bcrypt} via \texttt{passlib}, and inserts the account. Plain text credentials never touch the database. If the environment variables are missing on first startup, the application raises an error and refuses to start.
+
+\begin{lstlisting}[caption={Required environment variables}]
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin
+JWT_SECRET=<64-char hex string generated via secrets.token_hex(32)>
+JWT_EXPIRE_HOURS=24
+\end{lstlisting}
+
+\subsubsection{Authentication Flow}
+
+\begin{enumerate}
+    \item User opens the application — no token found → redirected to \texttt{/login}
+    \item User submits credentials → \texttt{POST /auth/login} → backend verifies bcrypt hash → returns signed JWT token
+    \item Frontend stores token in an \texttt{HttpOnly} cookie; all subsequent API requests include \texttt{Authorization: Bearer <token>} header
+    \item On 401 response from any endpoint, frontend clears the token and redirects to \texttt{/login}
+    \item After 24 hours the token expires; user logs in again to receive a fresh token
+    \item Logout clears the token — no server-side blacklist required
+\end{enumerate}
+
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Multi-Project Support}
+% ──────────────────────────────────────────────────────────────────────────────
+
+The system was extended to support multiple Jira projects concurrently. Every database entity is now scoped to a \texttt{project\_key}, allowing each project to maintain its own independent team constraints, scoring configuration, sync history, and task cache.
+
+\subsubsection{Database Schema Changes}
+
+A new \texttt{Project} table was introduced as the root entity:
+
+\begin{itemize}
+    \item \texttt{key} — Primary Key (e.g. \texttt{ASAI})
+    \item \texttt{name} — Display name
+    \item \texttt{server\_url}, \texttt{user\_email}, \texttt{api\_token} — Optional per-project credential overrides. If \texttt{null}, the system falls back to global credentials in the \texttt{Setting} table.
+    \item \texttt{active\_strategy}, \texttt{override\_labels} — Per-project scoring configuration
+    \item \texttt{last\_sync\_date} — ISO timestamp of most recent sync
+\end{itemize}
+
+The following tables were updated to include a \texttt{project\_key} foreign key with cascade delete: \texttt{TaskCache} (indexed, NOT NULL), \texttt{TeamRule} (strictly project-scoped), \texttt{AdvancedSettings} (primary key changed to \texttt{project\_key} — one settings row per project), and \texttt{UserTeam} (primary key changed to \texttt{(user\_account\_id, project\_key)}, with \texttt{project\_key = "GLOBAL"} indicating cross-project membership).
+
+\subsubsection{Existing Data Migration}
+
+On schema upgrade, all existing \texttt{TaskCache}, \texttt{TeamRule}, and \texttt{UserTeam} rows were tagged with the project key from the current \texttt{Setting} table, preserving all cached embeddings and configuration without data loss.
+
+\subsubsection{API Changes}
+
+\begin{itemize}
+    \item \texttt{GET /api/projects} — List all configured projects
+    \item \texttt{POST /api/projects} — Create a new project
+    \item \texttt{PUT /api/projects/\{key\}} — Update project name, strategy, labels, or credential overrides
+    \item \texttt{DELETE /api/projects/\{key\}} — Remove project and all cascaded data
+    \item All existing endpoints now require a \texttt{project\_key} header validated against the \texttt{Project} table.
+\end{itemize}
+
+\subsubsection{Frontend Changes}
+
+\begin{itemize}
+    \item \textbf{Sidebar:} Expandable project list showing each project's key badge and display name. Active project highlighted with a colored left border. Unsynced projects display an amber warning indicator.
+    \item \textbf{Global State:} \texttt{activeProject} managed globally and persisted in \texttt{localStorage}. All API requests pass \texttt{activeProject} as a request header.
+    \item \textbf{Dashboard:} Data re-fetches immediately on project change. If \texttt{last\_sync\_date} is \texttt{null}, a prominent warning overlay replaces the dashboard content.
+    \item \textbf{Settings:} Reorganized into a Global Credentials section and a Projects section with per-project General and Credentials tabs.
+\end{itemize}
+
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Project Creation Wizard}
+% ──────────────────────────────────────────────────────────────────────────────
+
+A guided, multi-step wizard was implemented to streamline the creation and initial configuration of Jira projects. While subsequent project additions can be managed via the Settings interface, the wizard is the primary entry point for new installations and simplifies the complex handshake between Jira authentication, project selection, and initial data synchronization.
+
+If the application detects that zero projects are configured, the user is automatically redirected to the wizard to complete the mandatory onboarding steps.
+
+The wizard walks through four distinct phases:
+
+\begin{enumerate}
+    \item \textbf{Jira Connection} — Validating the Jira server URL and credentials (Email + API Token) with real-time feedback.
+    \item \textbf{Live Project Selection} — Fetching a list of available projects from the Jira instance, allowing the administrator to select a project by name rather than manually entering a Jira key.
+    \item \textbf{Team \& Constraint Definition} — Defining the project's internal teams and initial label-to-team routing rules before the first sync.
+    \item \textbf{Initial Synchronization} — Triggering the first high-volume fetch and NLP embedding generation, with a real-time progress bar ensuring the dashboard remains locked until the system is ready for use.
+\end{enumerate}
+
+The wizard is implemented as a React modal component with persistent state tracking, allowing users to re-enter the flow from the Settings page if a setup was interrupted.
+
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Scoring Engine Refinements}
+\label{sec:scoring-refinements}
+% ──────────────────────────────────────────────────────────────────────────────
+
+Following real-world usage and design review, three scoring criteria were revised and one was removed.
+
+\subsubsection{Criterion 5 — Recent Activity: Reframed as Presence Consistency}
+
+The original implementation summed total logged seconds over the last 30 days, which inadvertently rewarded developers who worked excessive hours — creating a contradiction with Criterion 2 (Workload), which penalizes high task load. A developer grinding long weeks would simultaneously be penalized for high workload and rewarded for high activity.
+
+The criterion was reframed as a \textbf{presence consistency} metric. Instead of volume, it measures regularity. Additionally, the presence check window was extended from 4 to 7 days to better handle weekend gaps and prevent false "inactive" flags on Monday mornings.
+
+\begin{lstlisting}[language=Python, caption={Revised Recent Activity formula}]
+active_days = count_distinct_days_with_any_worklog(last_10_working_days)
+# 7 active days out of 10 = full score
+activity_score = min(100, (active_days / 7) * 100)
+\end{lstlisting}
+
+Key changes:
+\begin{itemize}
+    \item \textbf{Observation Window:} Reduced from 30 days to the last 10 working days to emphasize current momentum.
+    \item \textbf{Weekend Gap Protection:} The "current presence" check now uses a 7-day lookback window (up from 4) to ensure developers returning from a standard weekend are not incorrectly flagged as inactive.
+    \item \textbf{Leave Detection Upgrade:} Transitioned from a "unique days" to a \textbf{cumulative hours} calculation for leave detection. This ensures that long-term leave (e.g., a single 120-hour entry covering 3 weeks) is correctly identified, ensuring "On Leave" warnings are accurate.
+    \item \textbf{Holiday Handling:} If a developer has zero worklogs AND zero new task assignments in the window, their score is treated as neutral (50) rather than zero — absence may indicate planned leave, not ghosting.
+\end{itemize}
+
+\subsubsection{Criterion 6 — Urgency: Removed}
+
+The urgency criterion was removed from the scoring formula entirely. The core
+problem was fundamental: urgency is a property of the \textit{task}, not the
+\textit{developer}. Every developer received the identical urgency score for a
+given ticket, meaning the criterion contributed zero differentiation between
+candidates. It was mathematically present in the formula but had no effect on
+the ranking order — it shifted every score by the same constant, leaving the
+relative ordering completely unchanged.
+
+Removing it reduces the scoring engine from six criteria to five. The strategy
+preset weights were redistributed across the remaining criteria accordingly.
+Ticket priority is still read from Jira and displayed in the UI as context for
+the project manager, but it no longer participates in the scoring calculation.
+
+\subsubsection{Dynamic Priority Mapping}
+
+The previous hardcoded priority-to-score mapping (\texttt{Highest→100}, \texttt{High→75}, etc.) assumed standard Atlassian priority names. Projects using custom priority names (\texttt{Blocker}, \texttt{Critical}, \texttt{Normal}) would silently receive incorrect urgency signals.
+
+The mapping is now fetched dynamically from Jira on each project sync:
+
+\begin{lstlisting}[language=Python, caption={Dynamic priority mapping}]
+priorities = fetch_priorities_ordered_by_rank(project_key)
+scores = [100, 75, 50, 25, 10]
+priority_score_map = {
+    p.name: scores[min(i, len(scores)-1)]
+    for i, p in enumerate(priorities)
+}
+\end{lstlisting}
+
+The mapping is stored in \texttt{AdvancedSettings} per project and can be manually overridden by the administrator in the Advanced Settings UI.
+
+\subsubsection{Success Rate — Weight Reduced}
+
+The Success Rate criterion was retained but its default weight was significantly reduced across all strategy presets. Deadline data in Jira is frequently unreliable — developers assigned to unrealistic deadlines consistently appear to underperform regardless of actual skill. Reducing the weight to 5--10\% in most presets ensures this signal informs but does not dominate the recommendation.
+
+\begin{table}[H]
+\centering
+\caption{Updated Default Strategy Preset Weights}
+\begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+\hline
+\textbf{Criterion} & \textbf{BALANCED} & \textbf{SPEED} & \textbf{QUALITY} & \textbf{GROWTH} \\
+\hline
+Expertise        & 35\% & 10\% & 45\% & 5\%  \\
+Workload         & 30\% & 45\% & 10\% & 45\% \\
+Success Rate     & 5\%  & 5\%  & 15\% & 0\%  \\
+Category Exp.    & 15\% & 5\%  & 25\% & 5\%  \\
+Recent Activity  & 15\% & 35\% & 5\%  & 45\% \\
+\hline
+\end{tabularx}
+\end{table}
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Batch Migration Script}
+% ══════════════════════════════════════════════════════════════════════════════
+
+A standalone one-time migration script was developed for the initial import of large historical datasets spanning multiple years.
+
+\subsubsection{Why a Separate Script Is Necessary}
+
+The first-ever sync of 7+ years of Jira data cannot be handled by the regular \texttt{/api/sync} endpoint. At 200{,}000+ issues:
+
+\begin{itemize}
+    \item Sequential NLP inference on CPU would take 12--48 hours inside an HTTP request that will time out
+    \item A single network interruption requires restarting from zero with no recovery mechanism
+    \item Jira API rate limits throttle the process unpredictably
+    \item Loading the entire dataset into memory at once exceeds available RAM
+\end{itemize}
+
+\subsubsection{Script Design}
+
+The migration script runs as a standalone Python process directly on the server, outside the web application:
+
+\begin{enumerate}
+    \item \textbf{Resume Checkpoints:} Progress is saved after every batch of 100 tickets. On restart, the script continues from the last completed batch.
+
+    \item \textbf{Batch Encoding:} The NLP model's batch encoding mode delivers 10--20x faster inference than encoding one ticket at a time:
+\begin{lstlisting}[language=Python]
+embeddings = model.encode(batch_texts, batch_size=32)
+\end{lstlisting}
+
+    \item \textbf{Rate Limit Handling:} Automatic exponential backoff and retry on HTTP 429 responses. The script never crashes on rate limits.
+
+    \item \textbf{GPU Acceleration:} If a CUDA-capable GPU is available, the script uses \texttt{device='cuda'}, reducing multi-day migrations to hours.
+
+    \item \textbf{Progress Reporting:} Real-time console output shows batch number, elapsed time, estimated time remaining, and total issues processed.
+\end{enumerate}
+
+Once the initial migration completes, the regular three-tier sync schedule takes over and the migration script is never needed again.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Security Hardening \& Production Safeguards}
+% ══════════════════════════════════════════════════════════════════════════════
+
+To meet corporate compliance requirements and protect sensitive Jira integration data, a dedicated set of production-hardening measures was implemented across the authentication layer, reverse proxy configuration, and secret management strategy.
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{HttpOnly Cookie Authentication}
+% ──────────────────────────────────────────────────────────────────────────────
+
+Session token storage was migrated from \texttt{localStorage} to server-sent \texttt{HttpOnly} cookies. Tokens stored in \texttt{localStorage} are accessible to any JavaScript executing in the browser context — a significant attack surface if any third-party script or XSS vector is present. An \texttt{HttpOnly} cookie is transmitted automatically by the browser on every request but is never readable by JavaScript, completely eliminating the token-stealing XSS attack class.
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Enforced Environment Secrets}
+% ──────────────────────────────────────────────────────────────────────────────
+
+All insecure default fallback values — including any hardcoded \texttt{super-secret-key} strings — were removed from the codebase. The application now performs a \textbf{safe crash} on startup if \texttt{JWT\_SECRET} or \texttt{ENCRYPTION\_KEY} are absent from the environment. Rather than silently falling back to a weak default, the backend raises a \texttt{ValueError} and refuses to start, making misconfigured deployments immediately visible rather than silently insecure.
+
+\begin{lstlisting}[language=Python, caption={Enforced secret validation on startup}]
+JWT_SECRET = os.environ.get("JWT_SECRET")
+ENCRYPTION_KEY = os.environ.get("ENCRYPTION_KEY")
+
+if not JWT_SECRET or not ENCRYPTION_KEY:
+    raise ValueError(
+        "JWT_SECRET and ENCRYPTION_KEY must be set. "
+        "Refusing to start with missing secrets."
+    )
+\end{lstlisting}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Brute-Force Protection}
+% ──────────────────────────────────────────────────────────────────────────────
+
+To protect the administrator account from automated password-guessing attacks, the login endpoint implements mandatory rate limiting.
+
+\begin{itemize}
+    \item \textbf{Threshold:} Access is limited to \textbf{5 login attempts per minute} per IP address.
+    \item \textbf{Implementation:} The system uses \texttt{slowapi} (a Python implementation of the Fixed Window rate limiting algorithm), integrated directly into the FastAPI routing layer.
+    \item \textbf{Behavior:} If the threshold is exceeded, the backend returns an \texttt{HTTP 429 Too Many Requests} status code, and subsequent attempts are blocked until the one-minute window expires. This prevents brute-force scripts from cycling through thousands of common passwords at high speed.
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption={Rate limiting on login endpoint}]
+@router.post("/login")
+@limiter.limit("5/minute")
+def login(request: Request, response: Response, ...):
+    # Authenticate user...
+\end{lstlisting}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Nginx Security Headers}
+% ──────────────────────────────────────────────────────────────────────────────
+
+The Nginx reverse proxy configuration was extended to inject the following security headers on all responses:
+
+\begin{itemize}
+    \item \textbf{\texttt{X-Frame-Options: DENY}} — Prevents the application from being embedded in an \texttt{<iframe>}, mitigating clickjacking attacks.
+    \item \textbf{\texttt{X-Content-Type-Options: nosniff}} — Instructs browsers not to MIME-sniff responses away from the declared \texttt{Content-Type}, preventing content-type confusion attacks.
+    \item \textbf{\texttt{Strict-Transport-Security}} — Enforces HTTPS connections (HSTS) for all future requests from compliant browsers, eliminating protocol downgrade attacks.
+\end{itemize}
+
+\begin{lstlisting}[caption={Security headers in nginx.conf}]
+add_header X-Frame-Options "DENY" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header Strict-Transport-Security
+    "max-age=31536000; includeSubDomains" always;
+\end{lstlisting}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Admin Recovery CLI}
+% ──────────────────────────────────────────────────────────────────────────────
+
+A \texttt{reset\_password.py} utility was added as a standalone server-side script for manual administrator password resets. This eliminates the need for SMTP or email infrastructure — inappropriate for a locked-down internal tool — while providing a secure, auditable recovery path when administrator credentials are lost. The script accepts the new password via a prompt, hashes it with \texttt{bcrypt}, and updates the \texttt{portal\_users} table directly. It is designed to be run exclusively on the host server by an operator with direct access to the deployment environment.
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Encryption Key Sovereignty}
+% ──────────────────────────────────────────────────────────────────────────────
+
+Local \texttt{.encryption\_key} files that previously stored Fernet cryptographic keys in the container's writable layer were eliminated. All cryptographic keys must now be supplied exclusively via secure environment variables. This ensures that no sensitive key material is ever persisted to disk inside the container, preventing key exposure through container image snapshots, accidental commits, or filesystem access.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+% ══════════════════════════════════════════════════════════════════════════════
+
+The production improvements documented in this report transform Jira Assign AI from a local development prototype into a fully deployable, multi-project, authenticated system ready for corporate intranet use at enterprise scale.
+
+The backend logic improvements ensure the scoring algorithm produces accurate, time-aware recommendations by prioritizing recent developer activity using an exponential decay model. Containerization packages the entire stack into portable Docker containers deployable with a single command. The enterprise-scale database upgrade replaces SQLite with PostgreSQL and pgvector, eliminating RAM spikes and enabling millisecond-level vector search at any dataset size. The multi-project and authentication layer adds JWT-protected access, per-project configuration isolation, a guided project creation wizard, and significant scoring engine refinements — including the reframing of Recent Activity as a presence consistency metric, the removal of the flat Urgency criterion, and dynamic priority mapping for cross-project compatibility. The batch migration tooling handles the initial import of large historical datasets outside the web application's request lifecycle. The frontend performance is further optimized by a persistent 10-minute ticket caching layer. Finally, the security hardening layer eliminates an entire class of XSS-based token theft, enforces the presence of cryptographic secrets at startup, implements brute-force rate-limiting on sensitive endpoints, injects industry-standard browser security headers, and provides an operator-grade password recovery mechanism — ensuring the system meets corporate compliance requirements from day one.
+
+The core of the system — the five-factor scoring engine, the Explainable AI reasoning layer, the strategy presets (BALANCED, SPEED, QUALITY, GROWTH, PERSONALIZED), and the bilingual React dashboard — remains the foundation at every scale. Only the infrastructure, authentication layer, security posture, and project management capabilities grew with the requirements.
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\appendix
+\section{MVP vs.\ Production Comparison}
+% ══════════════════════════════════════════════════════════════════════════════
+
+The table below summarises the key capability differences between the original MVP prototype and the current production system.
+
+\begin{table}[H]
+\centering
+\caption{MVP vs.\ Production — Feature Comparison}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Feature} & \textbf{MVP State} & \textbf{Production State} \\
+\hline
+Database      & SQLite                  & PostgreSQL + pgvector \\
+Auth          & None                    & JWT + Login System \\
+Projects      & Single                  & Multi-Project Selector \\
+Syncing       & Full re-fetch           & Incremental + 3-Tier Scheduling \\
+Teams         & Global                  & Project-Isolated Teams \\
+Deployment    & Manual scripts          & Docker + Nginx Compose \\
+Weights       & Static presets          & Dynamic Weight \& Engine Editor \\
+Scoring       & 6 criteria              & 5 criteria + Time-Decay \\
+Scaling       & Limited (SQLite)        & Enterprise-Ready (PostgreSQL) \\
+Security      & None                    & HttpOnly Cookies, HSTS, Enforced Secrets \\
+Ticket Caching & None                    & 10-Minute Frontend TTL \\
+Brute-Force Protection & None                    & 5 Tries/Minute Rate Limit \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Detailed Scoring Criteria Comparison}
+
+The following table provides a direct comparison of how specific scoring metrics evolved between the MVP and Production versions to improve accuracy and reduce bias.
+
+\begin{table}[H]
+\centering
+\caption{Scoring Criteria Evolution}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Criterion} & \textbf{MVP (Legacy)} & \textbf{Production (Optimized)} \\
+\hline
+Expertise        & Pure semantic similarity; historical tasks weighted equally. & Semantic similarity + \textbf{Exponential Time-Decay} (recent tasks dominate). \\
+Workload         & Flat ticket count penalty; rewarded inactive users too heavily. & Normalized penalty relative to team average; dynamic scaling. \\
+Reliability      & Lifetime success rate; ancient failures penalize users forever. & \textbf{Decay-weighted} success rate; recent performance prioritized. \\
+Category Exp.    & Flat label match count; ignores skill evolution. & \textbf{Decay-weighted} label contribution; rewards recent focus. \\
+Recent Activity  & Total seconds logged (30d); rewarded excessive overtime. & \textbf{Presence Consistency} (distinct days in 10d window); rewards reliability. \\
+Urgency          & Priority-to-score mapping; applied identically to all users. & \textbf{REMOVED}; Urgency is a task property, not a developer trait. \\
+\hline
+\end{tabularx}
+\end{table}
+
+
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Frontend Architecture \& Page Descriptions}
+% ══════════════════════════════════════════════════════════════════════════════
+
+The React/TypeScript frontend is a single-page application (SPA) compiled by Vite and served by Nginx. All views share a global \texttt{activeProject} context — switching projects triggers an immediate data re-fetch across every page. The application uses \texttt{localStorage} to persist the active project and relies on \texttt{HttpOnly} cookies for session management.
+
+\subsection{Login Page}
+
+The secure entry point for administrators. Presents a dark-themed credential form matching the application design system. On successful authentication the backend returns a signed JWT via an \texttt{HttpOnly} cookie; on failure an inline error is shown without revealing whether the username or password was incorrect. Unauthenticated navigation to any route redirects here automatically.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{loginpage.PNG}
+    \caption{Login Page}
+    \label{fig:architecture}
+\end{figure}
+
+\subsection{Dashboard}
+
+The main workspace. Displays a ranked recommendation list for the currently selected Jira issue, with per-developer radar charts showing the breakdown across all five scoring criteria. If the active project has never been synced (\texttt{last\_sync\_date} is \texttt{null}), a warning overlay replaces the content and prompts the user to run an initial sync. Manual sync triggers are available here alongside the automated scheduler.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{dashboard_prod.PNG}
+    \caption{Dashboard}
+    \label{fig:architecture}
+\end{figure}
+
+\subsection{Projects Page}
+
+Central management for all configured Jira projects. Organised into two panels: the left panel lists all projects with their key badge, display name, last sync timestamp, and an amber warning indicator for unsynced projects; the right panel shows the selected project's General tab (strategy preset, label overrides) and Credentials tab (per-project server URL, email, and API token). A global credentials section above handles the fallback credentials used by projects without overrides.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{projects_prod.PNG}
+    \caption{Projects Page}
+    \label{fig:architecture}
+\end{figure}
+
+\subsection{Weights Editor}
+
+Advanced UI for overriding the default scoring engine constants. Allows administrators to adjust the weight of each of the five criteria per project beyond the four built-in strategy presets. Also surfaces the dynamic priority score mapping fetched from Jira, which can be manually overridden for projects with non-standard priority names.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{weights_editor.PNG}
+    \caption{Weights Editor}
+    \label{fig:architecture}
+\end{figure}
+
+\subsection{Team Constraints}
+
+Interface for defining project-specific teams and routing rules. Users are searched from the Jira user directory and assigned to named teams. Team rules map Jira labels to teams, acting as hard constraints that filter candidates before soft scoring begins. Supports the \texttt{GLOBAL} team pattern for users who participate across all projects.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{team_const.PNG}
+    \caption{Team Constraints}
+    \label{fig:architecture}
+\end{figure}
+
+\subsection{Project Setup Wizard}
+
+A three-step modal overlay shown automatically when adding new projects. Guides the administrator through connecting to Jira, selecting a project from the live project list, defining teams, and completing the first sync before entering the dashboard. This wizard will appear whenever a new project is decided to be added.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wizard.PNG}
+    \caption{Project Setup Wizard}
+    \label{fig:architecture}
+\end{figure}
+
+\subsection{Project Context \& Global State}
+
+\texttt{activeProject} is managed at the application root and injected via React context. Every API call includes the active project key as a request header, and all views subscribe to project changes so data always reflects the currently selected project. Deletion of the active project falls back to the first available project or redirects to the onboarding wizard if none remain.
+
+\end{document}

@@ -1,0 +1,5242 @@
+[
+  {
+    "key": "TEST-1",
+    "summary": "Implement Python-based health-check for SATCOM antenna tracking",
+    "description": "Develop a service to monitor the signal-to-noise ratio (SNR) of the satellite tracking unit in real-time. The service must calculate signal degradation patterns using Python and alert the GCS if the mechanical pointing error exceeds 0.5 degrees. Integration with the mission dashboard via FastAPI is required.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "satcom",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2025-03-10T09:00:00Z",
+    "updated_at": "2025-03-20T14:30:00Z",
+    "resolved_at": "2025-03-20T14:30:00Z"
+  },
+  {
+    "key": "TEST-2",
+    "summary": "Optimize PostgreSQL storage for high-resolution SAR imagery metadata",
+    "description": "Synthetic Aperture Radar (SAR) metadata is bloating the primary database. We need to implement table partitioning by 'flight_id' and optimize JSONB indexing for the payload-specific telemetry. Goal is to reduce query latency for image reconstruction by 40%.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "postgresql",
+      "database",
+      "performance"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2025-06-15T10:00:00Z",
+    "updated_at": "2025-06-25T11:00:00Z",
+    "resolved_at": "2025-06-25T11:00:00Z"
+  },
+  {
+    "key": "TEST-3",
+    "summary": "Refactor FastAPI auth logic for multi-site air-gapped synchronization",
+    "description": "User sessions must be verifiable across air-gapped ground stations using offline JWT rotation. This involves implementing a custom verification layer in FastAPI that handles time-synced TOTP secrets without external identity provider access. Security auditing of the rotation algorithm is mandatory.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "security",
+      "python"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2026-01-05T09:00:00Z",
+    "updated_at": "2026-02-01T16:00:00Z",
+    "resolved_at": "2026-02-01T16:00:00Z"
+  },
+  {
+    "key": "TEST-4",
+    "summary": "Develop Predictive Maintenance model for TB2 fuel pumps",
+    "description": "Utilize historical telemetry data to identify vibration signatures that precede fuel pump failure. The logic must be implemented as a background worker in the mission backend using NumPy for statistical analysis. Output will trigger a 'Low Reliability' status for the specific aircraft in the fleet manager.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "telemetry"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2025-11-10T08:00:00Z",
+    "updated_at": "2025-12-15T12:00:00Z",
+    "resolved_at": "2025-12-15T12:00:00Z"
+  },
+  {
+    "key": "TEST-5",
+    "summary": "Implement secure file-transfer protocol for mission data extraction",
+    "description": "Create a Python-based utility to securely move TB3 mission logs from the onboard Linux computer to the GCS. Protocol must support resume-on-disconnect for high-latency SATCOM links. Use Paramiko for SSH-based encrypted transfers and handle file integrity hashing.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "security",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-20T09:00:00Z",
+    "updated_at": "2026-03-05T17:00:00Z",
+    "resolved_at": "2026-03-05T17:00:00Z"
+  },
+  {
+    "key": "TEST-6",
+    "summary": "Debug SQLAlchemy session leak in flight-log ingestion",
+    "description": "High-volume telemetry ingestion is causing the database connection pool to hang after 6 hours of flight testing. Investigation shows sessions aren't being closed properly in the async event loop. Need to implement a proper context manager for all DB operations in the mission service.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "sqlalchemy",
+      "python",
+      "debugging"
+    ],
+    "story_points": 3,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-10T10:00:00Z",
+    "updated_at": "2026-03-15T14:00:00Z",
+    "resolved_at": "2026-03-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-7",
+    "summary": "Develop Python script for automated TB3 deck-landing simulation",
+    "description": "Automate the testing of the carrier-based landing algorithm using the HIL simulator. Script should vary wind-vector and deck-pitch parameters to verify the PID control loop responses. Log all deviations from the glide slope into the PostgreSQL analytics table.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "simulation",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2025-08-05T09:00:00Z",
+    "updated_at": "2025-08-20T12:00:00Z",
+    "resolved_at": "2025-08-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-8",
+    "summary": "Implement MAVLink v2.0 message extensions for payload EW status",
+    "description": "Extend the internal MAVLink library to support new Electronic Warfare (EW) status messages. This involves defining new XML message schemas and generating the Python/C++ headers. The new packets will transport jammer power and frequency coverage data to the GCS.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "mavlink",
+      "python",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-01-12T11:00:00Z",
+    "updated_at": "2026-01-25T10:00:00Z",
+    "resolved_at": "2026-01-25T10:00:00Z"
+  },
+  {
+    "key": "TEST-9",
+    "summary": "Optimize Python-based imagery mosaic generator",
+    "description": "The mission backend generates a tiled mosaic from the TB2's EO sensor during the flight. Currently, the Python script is too slow for 4K frames. Need to implement multiprocessing or offload the heavy image tiling to an OpenCV-based C++ service.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "performance",
+      "video"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-04-10T14:00:00Z",
+    "updated_at": "2025-04-20T09:00:00Z",
+    "resolved_at": "2025-04-20T09:00:00Z"
+  },
+  {
+    "key": "TEST-10",
+    "summary": "Refactor FastAPI middleware for centralized avionics telemetry logging",
+    "description": "Implement a standardized logging middleware for all avionics-facing microservices. Middleware should extract the 'UAV-ID' and 'Mission-ID' from headers and inject them into every log entry for ELK stack traceability. Essential for post-flight incident reports.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "python",
+      "logging"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-01T10:00:00Z",
+    "updated_at": "2026-02-10T16:00:00Z",
+    "resolved_at": "2026-02-10T16:00:00Z"
+  },
+  {
+    "key": "TEST-11",
+    "summary": "Implement Python logic for automated swarm de-confliction",
+    "description": "Develop a service that monitors swarm-member telemetry and issues 'Avoidance' commands if two UAVs enter a critical proximity zone. Logic must use a potential field algorithm to calculate non-conflicting headings. Integration with the swarm-leader microservice is required.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2025-09-01T09:00:00Z",
+    "updated_at": "2025-10-15T14:00:00Z",
+    "resolved_at": "2025-10-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-12",
+    "summary": "Initial GPS Spoofing Detection Algorithm (Python)",
+    "description": "Legacy prototype script from 2024. Uses sensor fusion (IMU vs GPS) to detect anomalies in reported coordinates, indicating potential signal spoofing. This script served as the foundation for our current integrated security layer in the Akıncı fleet.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "security",
+      "algorithms"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2024-02-15T10:00:00Z",
+    "updated_at": "2024-03-01T16:00:00Z",
+    "resolved_at": "2024-03-01T16:00:00Z"
+  },
+  {
+    "key": "TEST-13",
+    "summary": "Fix broken SQLAlchemy relationship in mission-to-waypoint mapping",
+    "description": "Deleting a mission via the API is failing to cascade-delete the associated waypoints in PostgreSQL. This is leading to orphaned rows and database inconsistencies. Need to fix the 'relationship' definition in the Python model and add proper foreign key constraints.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "sqlalchemy",
+      "python",
+      "database"
+    ],
+    "story_points": 2,
+    "assignee": "dev_gcs",
+    "created_at": "2025-12-05T13:00:00Z",
+    "updated_at": "2025-12-07T10:00:00Z",
+    "resolved_at": "2025-12-07T10:00:00Z"
+  },
+  {
+    "key": "TEST-14",
+    "summary": "Implement Python interface for controlling UAV laser designator",
+    "description": "Create a secure backend service to handle laser firing commands from the GCS. Service must verify safety interlocks (altitude, attitude, and distance-to-target) before issuing the MAVLink packet. All laser activities must be logged with millisecond precision for compliance.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "mavlink",
+      "security"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-07-20T09:00:00Z",
+    "updated_at": "2025-08-01T15:00:00Z",
+    "resolved_at": "2025-08-01T15:00:00Z"
+  },
+  {
+    "key": "TEST-15",
+    "summary": "Develop Python tool for flight-log compression and S3 archival",
+    "description": "Build a CLI tool to compress large binary telemetry files into a searchable format and upload them to S3 storage. Tool must support metadata extraction (UAV-ID, Date, Pilot) to allow for quick retrieval through the mission management dashboard.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "python",
+      "infrastructure",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2025-01-10T10:00:00Z",
+    "updated_at": "2025-01-15T12:00:00Z",
+    "resolved_at": "2025-01-15T12:00:00Z"
+  },
+  {
+    "key": "TEST-16",
+    "summary": "Architect High-Availability Telemetry Ingestion for Akıncı Fleet",
+    "description": "Design a resilient ingestion layer capable of handling 200+ concurrent UAV telemetry streams. Architecture must include redundant Redis buffers and an auto-scaling cluster of Python-based receivers. System must ensure zero data loss during regional network outages.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "telemetry"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-15T09:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-17",
+    "summary": "Design encrypted GCS-to-UAV communication protocol for BLOS",
+    "description": "Designing a secure protocol for Beyond Line of Sight (BLOS) missions. Protocol must wrap standard MAVLink packets in an AES-256-GCM layer with dynamic key exchange via SATCOM. Requires careful handling of latency and packet re-ordering at the avionics level.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "security",
+      "encryption",
+      "satcom"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-20T08:00:00Z",
+    "updated_at": "2026-04-02T16:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-18",
+    "summary": "Develop real-time target-tracking SLAM integration for urban environments",
+    "description": "Implementing Simultaneous Localization and Mapping (SLAM) for low-altitude urban surveillance. The system must process LIDAR and EO data to build 3D obstacle maps in real-time. High computational demand requires optimized C++ kernels integrated into the Python control stack.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "algorithms",
+      "slam",
+      "vision"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-25T10:00:00Z",
+    "updated_at": "2026-04-01T15:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-19",
+    "summary": "Architect centralized fleet management dashboard with Kubernetes",
+    "description": "Design a globally accessible fleet management system that orchestrates individual GCS instances. The system must use Kubernetes for auto-scaling and support regional data sovereignty. High complexity in managing state-sync across multiple geographic clusters.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "kubernetes",
+      "infrastructure",
+      "architecture"
+    ],
+    "story_points": 13,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-28T09:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-20",
+    "summary": "Develop LIDAR-based automated takeoff/landing safety layer",
+    "description": "Integrating LIDAR distance data to provide millisecond-precision altitude checks during the final landing phase. This system serves as a redundant safety layer to the ultrasonic and barometric sensors. High risk for system conflict if the fusion logic is not deterministic.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "avionics",
+      "safety",
+      "algorithms"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-12T14:00:00Z",
+    "updated_at": "2026-04-02T09:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-21",
+    "summary": "Integrate AI-driven object detection into mission control video feed",
+    "description": "Displaying bounding boxes and confidence scores for detected assets on the GCS primary video feed. The system must process the vision payload's telemetry and render overlays with sub-10ms latency. Significant performance tuning required on the React-based GCS frontend.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "ai",
+      "react",
+      "video"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-18T11:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-22",
+    "summary": "Design distributed task scheduler for post-flight image processing",
+    "description": "Post-flight SAR and EO image processing requires massive compute resources. Design a distributed scheduler using Celery and RabbitMQ that distributes tasks to a high-performance cluster. System must handle multi-gigabyte file transfers and worker failures gracefully.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "python",
+      "data"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-22T08:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-23",
+    "summary": "Implement Redux state management for swarm formation control UI",
+    "description": "The GCS dashboard needs to support real-time formation changes for UAV swarms. Implement a complex Redux slice that manages the coordinates and status of up to 10 swarm members. UI must remain fluid and responsive while processing 20Hz telemetry updates.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "redux",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-25T13:00:00Z",
+    "updated_at": "2026-04-01T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-24",
+    "summary": "Develop React component for monitoring fuel flow sensors",
+    "description": "Build a real-time visualization tool for engine fuel flow and remaining endurance on the GCS dashboard. The component must include a predicted 'End of Flight' timer based on current consumption rates and mission altitude.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-01-10T10:00:00Z",
+    "updated_at": "2026-02-05T14:00:00Z",
+    "resolved_at": "2026-02-05T14:00:00Z"
+  },
+  {
+    "key": "TEST-25",
+    "summary": "Fix React re-render bug in mission waypoint list",
+    "description": "Adding or removing waypoints in the mission planner is causing the entire map to flicker due to unnecessary re-renders. Need to implement 'React.memo' for individual waypoint items and optimize the state selection logic in the Redux store.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "performance",
+      "frontend"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-15T09:00:00Z",
+    "updated_at": "2026-02-28T14:00:00Z",
+    "resolved_at": "2026-02-28T14:00:00Z"
+  },
+  {
+    "key": "TEST-26",
+    "summary": "Update GCS dashboard to display gimbal orientation in 3D",
+    "description": "Implement a 3D visualization of the EO/IR payload's orientation using Three.js within the React GCS. The model should reflect the real-time pitch, roll, and yaw data from the gimbal's telemetry stream.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "threejs",
+      "vision"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-20T13:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-27",
+    "summary": "Implement CSS dark-mode for GCS night-operations terminal",
+    "description": "Request from mission operators for a high-contrast dark theme to reduce eye strain during night flights. Update the Material UI theme and ensure all telemetry charts (Line charts, Gauges) are legible in low-light environments.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 2,
+    "assignee": "dev_lead",
+    "created_at": "2026-01-20T10:00:00Z",
+    "updated_at": "2026-02-10T16:00:00Z",
+    "resolved_at": "2026-02-10T16:00:00Z"
+  },
+  {
+    "key": "TEST-28",
+    "summary": "Refactor React sidebar for multi-drone mission selection",
+    "description": "Update the GCS sidebar to support selecting and switching between multiple active missions in a fleet. The UI must clearly indicate the 'Primary' drone and show high-level status (Battery, GPS, Link) for secondary units.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "ux"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2026-02-25T09:00:00Z",
+    "updated_at": "2026-03-12T15:00:00Z",
+    "resolved_at": "2026-03-12T15:00:00Z"
+  },
+  {
+    "key": "TEST-29",
+    "summary": "Fix broken Axios interceptor for JWT token refresh",
+    "description": "The GCS dashboard is logging users out during long flights because the token refresh logic is failing intermittently. Need to debug the Axios interceptor and ensure the refresh request is sent before the session expires.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "security",
+      "debugging"
+    ],
+    "story_points": 2,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-15T11:00:00Z",
+    "updated_at": "2026-03-18T10:00:00Z",
+    "resolved_at": "2026-03-18T10:00:00Z"
+  },
+  {
+    "key": "TEST-30",
+    "summary": "Develop React component for MAVLink packet throughput monitoring",
+    "description": "Build a diagnostic panel for flight test engineers to monitor real-time packet loss and latency for MAVLink streams. Component must use WebSockets for live data and display a rolling history of the link quality.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Review",
+    "labels": [
+      "react",
+      "websocket",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-22T14:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-31",
+    "summary": "Integrate Google Maps Terrain API into mission planner",
+    "description": "Enable terrain elevation data on the mission planner map to help pilots visualize mountain height vs mission altitude. This involves fetching SRTM data via the Google Maps API and rendering elevation profiles for the planned path.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "api",
+      "geospatial"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2026-01-05T13:00:00Z",
+    "updated_at": "2026-01-20T10:00:00Z",
+    "resolved_at": "2026-01-20T10:00:00Z"
+  },
+  {
+    "key": "TEST-32",
+    "summary": "Fix CSS alignment issues on GCS fleet status table",
+    "description": "The status icons in the fleet management table are misaligned on smaller GCS monitors. Need to update the flexbox settings and ensure the table remains responsive across different screen sizes (Tablet to 4K).",
+    "issuetype": "Bug",
+    "priority": "Lowest",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 1,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-28T13:00:00Z",
+    "updated_at": "2026-03-30T10:00:00Z",
+    "resolved_at": "2026-03-30T10:00:00Z"
+  },
+  {
+    "key": "TEST-33",
+    "summary": "Develop React component for Electronic Warfare (EW) power levels",
+    "description": "Build a real-time monitor for the EW payload's jamming power across various frequency bands. The component must display a 'Waterfall' signal diagram and provide visual alerts if the power consumption exceeds safe aircraft limits.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "frontend",
+      "sigint"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-30T11:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-34",
+    "summary": "Update GCS UI for TB3 Naval variant folding-wing status",
+    "description": "The TB3 naval variant requires a specific indicator for wing-lock status during takeoff and landing from carriers. Add a high-visibility SVG animation to the React dashboard that reflects the real-time sensor data from the wing actuators.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "avionics"
+    ],
+    "story_points": 3,
+    "assignee": "dev_hardware",
+    "created_at": "2025-11-20T10:00:00Z",
+    "updated_at": "2025-11-25T14:00:00Z",
+    "resolved_at": "2025-11-25T14:00:00Z"
+  },
+  {
+    "key": "TEST-35",
+    "summary": "Annual Leave - Semester Break",
+    "description": "Developer is out of office for planned leave. No mission-critical assignments should be given during this window. Handover completed for all active GCS UI bugs to the junior frontend team.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "To Do",
+    "labels": [
+      "izin",
+      "leave",
+      "admin"
+    ],
+    "story_points": 1,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-30T09:00:00Z",
+    "updated_at": "2026-04-03T08:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-36",
+    "summary": "Medical Leave - Quarantine",
+    "description": "Developer is working remotely or unavailable due to mandatory health guidelines. No hardware-dependent tasks should be assigned as they lack access to the GCS simulators at the Gebze technical campus.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "In Progress",
+    "labels": [
+      "izin",
+      "remote"
+    ],
+    "story_points": 1,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-01T09:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-37",
+    "summary": "Annual Leave - Ramadan Feast",
+    "description": "Public holiday leave for the developer. No assignments should be planned for this week. Developer is currently traveling and will be offline until the next sprint cycle starts.",
+    "issuetype": "Task",
+    "priority": "Lowest",
+    "status": "To Do",
+    "labels": [
+      "izin",
+      "leave",
+      "holiday"
+    ],
+    "story_points": 1,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-25T09:00:00Z",
+    "updated_at": "2026-04-03T08:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-38",
+    "summary": "Initial GPS module integration driver (C++)",
+    "description": "Legacy driver from 2022 for the U-Blox GPS module. Built for a bare-metal microcontroller. Handles NMEA sentence parsing and outputs raw coordinate strings to the logging service. This code is the precursor to our modern avionics stack.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "gps"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2022-03-01T09:00:00Z",
+    "updated_at": "2022-03-15T12:00:00Z",
+    "resolved_at": "2022-03-15T12:00:00Z"
+  },
+  {
+    "key": "TEST-39",
+    "summary": "Initial Serial Port Interface library (C/C++)",
+    "description": "Legacy library for serial communication between the GCS and the aircraft. Built using direct register access for deterministic timing. This code was used in the first prototype flight tests and is now kept as a reference for low-level avionics protocols.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2021-06-15T09:00:00Z",
+    "updated_at": "2021-07-20T14:00:00Z",
+    "resolved_at": "2021-07-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-40",
+    "summary": "Initial TB2 Analog Video Downlink Driver (C)",
+    "description": "Very old driver from 2021 for handling the analog video transmission from the TB2's payload camera. Code is highly optimized for low-resource hardware and has no support for modern digital encryption or HD streams.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "c",
+      "video"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2021-05-15T10:00:00Z",
+    "updated_at": "2021-06-20T14:00:00Z",
+    "resolved_at": "2021-06-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-41",
+    "summary": "Initial PID control loop for TB2 altitude-hold maneuver",
+    "description": "The first version of the autonomous altitude-hold logic from 2022. This C-based code was rigorously tested in wind tunnels and flight trials. It is a critical piece of our flight control history and serves as the baseline for all current PID loops.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "algorithms",
+      "c"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2022-02-10T10:00:00Z",
+    "updated_at": "2022-04-15T16:00:00Z",
+    "resolved_at": "2022-04-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-42",
+    "summary": "Initial Magnetometer Calibration Script (Python 2.7)",
+    "description": "Historical script used for calibrating the HMC5883L magnetometer on early flight controllers. This script is written in Python 2.7 and uses outdated serial libraries. Not to be used for active Akıncı production as it lacks modern security features.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "python",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2021-11-10T09:00:00Z",
+    "updated_at": "2021-12-01T14:00:00Z",
+    "resolved_at": "2021-12-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-43",
+    "summary": "Initial 2D Moving Map (Flash/ActionScript)",
+    "description": "Extremely old map implementation from the first prototype years. Built with Flash and ActionScript 3.0. This is kept in the archives as a reference for how the original coordinate system was designed for the TB1 project.",
+    "issuetype": "Task",
+    "priority": "Lowest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "flash",
+      "map"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2019-01-01T09:00:00Z",
+    "updated_at": "2019-03-01T14:00:00Z",
+    "resolved_at": "2019-03-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-44",
+    "summary": "Initial C++ Driver for ADIS16448 IMU",
+    "description": "Low-level driver for the high-precision IMU used in the 2021 flight computers. Uses SPI communication and involves complex bit-shifting for raw data conversion. This is the gold standard for our legacy IMU support and was used for early TB2 navigation.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2021-03-05T09:00:00Z",
+    "updated_at": "2021-04-10T14:00:00Z",
+    "resolved_at": "2021-04-10T14:00:00Z"
+  },
+  {
+    "key": "TEST-45",
+    "summary": "Initial GPS/INS EKF Fusion Algorithm (MATLAB/C)",
+    "description": "The first version of our Extended Kalman Filter (EKF) for fusing GPS and inertial data. Historically significant as it allowed for the first fully autonomous landing of a TB2 airframe. Highly complex mathematical implementation that has since been ported to C++.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "algorithms",
+      "c"
+    ],
+    "story_points": 13,
+    "assignee": "dev_testing",
+    "created_at": "2020-05-10T10:00:00Z",
+    "updated_at": "2020-07-20T16:00:00Z",
+    "resolved_at": "2020-07-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-46",
+    "summary": "Initial Serial Bootloader for STM32 Flight Controllers",
+    "description": "Legacy bootloader code for our first generation of custom flight control boards. Written in C and assembly. It allowed for firmware updates without opening the aircraft's avionics bay and served as the foundation for our current OTA systems.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "c",
+      "firmware"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2021-06-15T09:00:00Z",
+    "updated_at": "2021-07-20T12:00:00Z",
+    "resolved_at": "2021-07-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-47",
+    "summary": "Initial PID Tuning Interface (Python/Tkinter)",
+    "description": "Very old UI tool built with Tkinter for flight test engineers to adjust PID gains in real-time. This is a historical relic from the time before we had a proper integrated GCS environment. Used for early Akıncı flight modeling.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "python",
+      "avionics"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2020-02-15T10:00:00Z",
+    "updated_at": "2020-03-01T14:00:00Z",
+    "resolved_at": "2020-03-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-48",
+    "summary": "Initial Flight Simulator Bridge (UDP)",
+    "description": "First attempt at bridging our software stack with the X-Plane flight simulator in 2021. Uses raw UDP packets and a custom C++ translation layer. This was the foundation of our current HIL testing suite and is now deprecated.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "simulation",
+      "cpp"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2021-05-10T09:00:00Z",
+    "updated_at": "2021-06-15T14:00:00Z",
+    "resolved_at": "2021-06-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-49",
+    "summary": "Initial Battery Management System (BMS) Logger (Python)",
+    "description": "Simple logging script from 2021 for tracking battery voltage and temperature during test flights. Uses a basic CSV format and was eventually integrated into the main telemetry stream. Historically significant for aircraft endurance testing.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "python",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_hardware",
+    "created_at": "2021-08-15T10:00:00Z",
+    "updated_at": "2021-08-20T12:00:00Z",
+    "resolved_at": "2021-08-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-50",
+    "summary": "Develop Predictive Maintenance algorithm for UAV servo actuators",
+    "description": "Utilize current-draw patterns and mechanical feedback from telemetry to predict impending servo failures. The algorithm must identify anomalies that correlate with gear-wear and motor-fatigue. Implementation should be as a FastAPI-compatible Python service for real-time fleet health scoring.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "algorithms",
+      "telemetry"
+    ],
+    "story_points": 8,
+    "assignee": null,
+    "created_at": "2026-04-03T11:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-51",
+    "summary": "Implement Kalman Filter for multi-UAV swarm position synchronization",
+    "description": "Swarm operations require sub-meter relative positioning accuracy. We need to implement a decentralized Kalman Filter in the Python backend to fuse UWB ranging data with GPS telemetry. This is critical for preventing mid-air collisions during high-density swarm maneuvers.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2025-01-15T09:00:00Z",
+    "updated_at": "2025-01-30T16:00:00Z",
+    "resolved_at": "2025-01-30T16:00:00Z"
+  },
+  {
+    "key": "TEST-52",
+    "summary": "Optimize PostgreSQL query for regional flight path intersection checks",
+    "description": "The mission planner is slow when checking if a new flight path intersects with existing No-Fly Zones (NFZ). We need to optimize the PostGIS 'ST_Intersects' queries and implement GiST indexing on the geometry columns. Performance must be under 100ms for 1000+ active zones.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "postgresql",
+      "postgis",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2025-08-10T10:00:00Z",
+    "updated_at": "2025-08-15T14:00:00Z",
+    "resolved_at": "2025-08-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-53",
+    "summary": "Develop FastAPI microservice for real-time SIGINT data processing",
+    "description": "Signal Intelligence (SIGINT) payloads generate high volumes of spectral data. We need a dedicated FastAPI service to ingest this via UDP, perform FFT analysis using NumPy, and expose a WebSocket for GCS visualization. High throughput and low latency are the primary requirements.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "fastapi",
+      "python",
+      "sigint"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-15T09:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-54",
+    "summary": "Architect Kubernetes-based simulation environment for HIL/SIL",
+    "description": "We are scaling our simulation capabilities to support 500+ concurrent virtual UAVs. Need to design a K8s architecture that can orchestrate Dockerized flight controllers and physics engines. Requires deep knowledge of networking for low-latency inter-pod communication.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "kubernetes",
+      "infrastructure",
+      "simulation"
+    ],
+    "story_points": 13,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-25T08:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-55",
+    "summary": "Update GCS frontend to support multi-drone mission control",
+    "description": "The current React dashboard is designed for single-drone control. We need to implement a 'Swarm View' that allows a single operator to monitor telemetry for up to 10 UAVs simultaneously. This requires a major refactor of the Redux state management and map layers.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "redux",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2026-01-05T10:00:00Z",
+    "updated_at": "2026-02-15T16:00:00Z",
+    "resolved_at": "2026-02-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-56",
+    "summary": "Fix React CSS for Electronic Warfare (EW) signal waterfall",
+    "description": "The waterfall display for spectral analysis is overflowing the container on tablet devices. Need to implement a responsive CSS grid and ensure the canvas scales correctly without blurring the signal peaks. Crucial for field operators using mobile GCS units.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 2,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-10T13:00:00Z",
+    "updated_at": "2026-03-12T10:00:00Z",
+    "resolved_at": "2026-03-12T10:00:00Z"
+  },
+  {
+    "key": "TEST-57",
+    "summary": "Paternity Leave - Extended",
+    "description": "Developer is on paternity leave. No mission-critical tasks or high-priority bug fixes should be assigned. Handover completed for the SATCOM encryption module. Returning in late April.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "To Do",
+    "labels": [
+      "izin",
+      "leave",
+      "admin"
+    ],
+    "story_points": 1,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-20T09:00:00Z",
+    "updated_at": "2026-04-03T08:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-58",
+    "summary": "Initial TB2 Autoland Logic (C/C++)",
+    "description": "The original implementation of the autonomous landing sequence for the TB2. Uses ultrasonic sensors for precision altitude during the flare maneuver. This code has been flight-proven for 100,000+ flight hours and serves as the baseline for all naval variants.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "avionics"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2020-03-01T10:00:00Z",
+    "updated_at": "2020-05-15T14:00:00Z",
+    "resolved_at": "2020-05-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-59",
+    "summary": "Implement Python script for automated SATCOM link budget calculation",
+    "description": "Create a tool to predict SATCOM link availability based on flight path, satellite orbits, and atmospheric conditions. The script will be used by flight planners to identify potential 'blackout' zones before the UAV takes off.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "satcom",
+      "algorithms"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-06-01T09:00:00Z",
+    "updated_at": "2025-06-10T17:00:00Z",
+    "resolved_at": "2025-06-10T17:00:00Z"
+  },
+  {
+    "key": "TEST-60",
+    "summary": "Debug memory corruption in Python MAVLink logger",
+    "description": "The logging service is crashing randomly when processing large telemetry bursts. Investigation suggests an issue with the circular buffer implementation in the Python C-extension. Need to profile with Valgrind and check for pointer leaks during high-frequency writes.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "debugging",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-15T11:00:00Z",
+    "updated_at": "2026-02-25T15:00:00Z",
+    "resolved_at": "2026-02-25T15:00:00Z"
+  },
+  {
+    "key": "TEST-61",
+    "summary": "Develop React component for SAR payload status monitoring",
+    "description": "Create a dashboard for monitoring the temperature, power consumption, and focus status of the Synthetic Aperture Radar (SAR) payload. Component must provide visual alerts if the radar pulse-repetition frequency (PRF) deviates from the mission plan.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "sar"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2025-11-10T14:00:00Z",
+    "updated_at": "2025-11-20T10:00:00Z",
+    "resolved_at": "2025-11-20T10:00:00Z"
+  },
+  {
+    "key": "TEST-62",
+    "summary": "Implement Redux state for encrypted radio link control",
+    "description": "The radio link encryption keys need to be managed through the GCS UI. Implement a secure Redux slice to handle key rotation and synchronization with the backend. Must ensure that encryption keys are never logged or exposed in plain text in the browser console.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "redux",
+      "security"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-28T09:00:00Z",
+    "updated_at": "2026-04-02T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-63",
+    "summary": "Initial C++ Driver for Laser Range Finder (LRF)",
+    "description": "Legacy driver for the early laser range finder used for target acquisition. Written for a bare-metal RTOS. The code handles the timing-critical laser firing and return pulse detection. Essential for legacy support of the TB2 payload variants.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2021-01-15T10:00:00Z",
+    "updated_at": "2021-02-20T14:30:00Z",
+    "resolved_at": "2021-02-20T14:30:00Z"
+  },
+  {
+    "key": "TEST-64",
+    "summary": "Refactor SQLAlchemy models for global flight log sharding",
+    "description": "As the UAV fleet grows, we need to shard our PostgreSQL database by regional flight zones. Refactor the existing SQLAlchemy models to support dynamic table naming and ensure that cross-shard queries are handled correctly by the FastAPI backend.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "sqlalchemy",
+      "postgresql",
+      "database"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2025-09-10T09:00:00Z",
+    "updated_at": "2025-09-25T17:00:00Z",
+    "resolved_at": "2025-09-25T17:00:00Z"
+  },
+  {
+    "key": "TEST-65",
+    "summary": "Fix broken Material UI theme for night operations mode",
+    "description": "The contrast in 'Night Mode' is insufficient for the altitude gauges. Need to update the Material UI primary palette and ensure all typography meets WCAG accessibility standards for low-light cockpit visibility. Specifically affects the Akıncı GCS terminals.",
+    "issuetype": "Bug",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "react",
+      "ux"
+    ],
+    "story_points": 2,
+    "assignee": "dev_testing",
+    "created_at": "2026-01-20T13:00:00Z",
+    "updated_at": "2026-01-22T10:00:00Z",
+    "resolved_at": "2026-01-22T10:00:00Z"
+  },
+  {
+    "key": "TEST-66",
+    "summary": "Integrate real-time weather radar overlay using WebGL",
+    "description": "Operators need to see localized storm cells during mission execution. Integrate weather radar API data and render it as a low-latency WebGL layer on the GCS map. Must support alpha-blending and dynamic opacity based on storm intensity.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "webgl",
+      "geospatial",
+      "frontend"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-20T09:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-67",
+    "summary": "Develop Python tool for flight log integrity verification",
+    "description": "Create a service that uses HMAC signatures to verify that flight logs have not been tampered with during transit from the regional GCS to the central server. Essential for flight safety audits and accident investigation.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "security",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2025-12-05T10:00:00Z",
+    "updated_at": "2025-12-10T16:00:00Z",
+    "resolved_at": "2025-12-10T16:00:00Z"
+  },
+  {
+    "key": "TEST-68",
+    "summary": "Initial 3D Payload Calibration Tool (Java/Swing)",
+    "description": "Legacy calibration tool from 2021 for the gimbaled camera systems. Built with Java Swing and JOGL. Used by assembly line technicians to ensure the camera sensors are perfectly aligned with the aircraft's center of gravity.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "java",
+      "design"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2021-05-10T08:00:00Z",
+    "updated_at": "2021-06-05T14:00:00Z",
+    "resolved_at": "2021-06-05T14:00:00Z"
+  },
+  {
+    "key": "TEST-69",
+    "summary": "Refactor FastAPI middleware for automatic telemetry data anonymization",
+    "description": "Before flight logs are exported to external flight analysts, sensitive GPS and pilot data must be removed. Implement a FastAPI middleware that intercepts export requests and performs rule-based anonymization on the JSON payload.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "python",
+      "security"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-01-15T11:00:00Z",
+    "updated_at": "2026-01-25T17:00:00Z",
+    "resolved_at": "2026-01-25T17:00:00Z"
+  },
+  {
+    "key": "TEST-70",
+    "summary": "Medical Leave - Annual Checkup",
+    "description": "Developer is out for a scheduled medical checkup. No urgent tasks should be assigned for this 48-hour window. The team lead will monitor the GCS backend during this period.",
+    "issuetype": "Task",
+    "priority": "Lowest",
+    "status": "To Do",
+    "labels": [
+      "leave",
+      "izin"
+    ],
+    "story_points": 1,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-01T09:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-71",
+    "summary": "Implement Redux state for UAV Swarm formation control",
+    "description": "Create a unified state management layer for controlling multiple UAVs as a single swarm. The state must synchronize formation patterns (V-shape, Line, Diamond) and handle real-time leader-follower reassignments in the React frontend.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "redux",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2025-10-15T09:00:00Z",
+    "updated_at": "2025-11-10T15:00:00Z",
+    "resolved_at": "2025-11-10T15:00:00Z"
+  },
+  {
+    "key": "TEST-72",
+    "summary": "Architect distributed mission planning engine for long-range missions",
+    "description": "Long-range missions require hundreds of waypoints and complex fuel calculations. Design a distributed engine that can parallelize pathfinding across multiple server nodes. High complexity due to terrain-aware pathfinding and wind-vector optimization.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "algorithms",
+      "python"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-22T10:00:00Z",
+    "updated_at": "2026-04-02T16:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-73",
+    "summary": "Fix Python asyncio bug in remote command execution",
+    "description": "Delayed commands are causing timeouts in the remote GCS bridge. The asyncio event loop is being blocked by a synchronous file-read operation in the MAVLink parser. Need to move the I/O operation to a thread pool.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "asyncio",
+      "debugging"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2026-01-05T08:00:00Z",
+    "updated_at": "2026-01-12T12:00:00Z",
+    "resolved_at": "2026-01-12T12:00:00Z"
+  },
+  {
+    "key": "TEST-74",
+    "summary": "Initial C# Tool for Mission Playback (Windows XP era)",
+    "description": "Legacy playback tool from the very early flight tests in 2018. Built for Windows XP and uses raw binary telemetry logs. Historically significant as the first tool used for pilot post-flight analysis.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "csharp",
+      "telemetry"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2018-08-10T10:00:00Z",
+    "updated_at": "2018-09-30T16:00:00Z",
+    "resolved_at": "2018-09-30T16:00:00Z"
+  },
+  {
+    "key": "TEST-75",
+    "summary": "Implement Python logic for real-time UAV health scoring",
+    "description": "Create a service that generates a 'Health Score' (0-100) based on motor vibrations, battery health, and sensor variance. The score must be recalculated every 10 seconds and exposed to the GCS via a FastAPI endpoint.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "telemetry",
+      "health"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2025-04-12T09:00:00Z",
+    "updated_at": "2025-04-20T14:00:00Z",
+    "resolved_at": "2025-04-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-76",
+    "summary": "Update GCS UI for Akıncı C-model specific engines",
+    "description": "The Akıncı C variant has new engine monitoring requirements. Update the React dashboard to include Gauges for fuel flow rate and exhaust gas temperature. Must handle the new engine-specific MAVLink telemetry IDs.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_ai",
+    "created_at": "2026-02-05T14:00:00Z",
+    "updated_at": "2026-02-15T09:00:00Z",
+    "resolved_at": "2026-02-15T09:00:00Z"
+  },
+  {
+    "key": "TEST-77",
+    "summary": "Integrate AI Vision target classification into GCS Video Stream",
+    "description": "The onboard target recognition system now supports 50+ classes (tanks, trucks, etc.). Update the GCS video overlay to display the classification label and confidence score. Requires optimized React rendering for low-latency video updates.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "ai",
+      "react",
+      "video"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-20T08:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-78",
+    "summary": "Security Patch for SQL Injection vulnerability in telemetry reporting",
+    "description": "Found a potential SQL injection vulnerability in the flight log search endpoint. Need to refactor all raw SQL queries to use SQLAlchemy's parameterized queries. Critical security fix for the mission backend.",
+    "issuetype": "Bug",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "security",
+      "sqlalchemy",
+      "python"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-05T09:00:00Z",
+    "updated_at": "2026-03-08T15:00:00Z",
+    "resolved_at": "2026-03-08T15:00:00Z"
+  },
+  {
+    "key": "TEST-79",
+    "summary": "Initial C++ Driver for Electronic Speed Controller (ESC)",
+    "description": "Low-level driver for controlling brushless motor ESCs via CAN bus. Historically used in the first prototype airframes. Optimized for deterministic timing and fail-safe operation during power loss.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2019-12-10T10:00:00Z",
+    "updated_at": "2020-01-15T16:00:00Z",
+    "resolved_at": "2020-01-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-80",
+    "summary": "Refactor FastAPI auth to support Hardware Security Keys (FIDO2)",
+    "description": "Enhance pilot security by implementing support for FIDO2/WebAuthn security keys in our FastAPI authentication service. Update the React frontend to handle the WebAuthn challenge/response flow.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "security",
+      "fastapi",
+      "webauthn"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2025-12-01T10:00:00Z",
+    "updated_at": "2025-12-15T14:00:00Z",
+    "resolved_at": "2025-12-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-81",
+    "summary": "Implement Redux state for GCS Mission Control layout customization",
+    "description": "Allow operators to rearrange and resize telemetry widgets on the dashboard. Save the custom layout in the Redux store and persist it via the backend API. Must support 'Reset to Default' functionality.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "react",
+      "redux",
+      "ux"
+    ],
+    "story_points": 3,
+    "assignee": "dev_ai",
+    "created_at": "2026-02-10T10:00:00Z",
+    "updated_at": "2026-02-20T16:00:00Z",
+    "resolved_at": "2026-02-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-82",
+    "summary": "Architect fault-tolerant telemetry ingestion using NATS JetStream",
+    "description": "Design a highly available telemetry ingestion pipeline using NATS JetStream. The system must guarantee 'at-least-once' delivery for flight-critical telemetry even during regional server failures. Requires deep knowledge of distributed messaging.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "nats"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-28T09:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-83",
+    "summary": "Fix broken React map markers for swarm follower UAVs",
+    "description": "In swarm view, follower UAVs are appearing with the wrong icon color. Need to fix the conditional rendering logic in the 'UavMarker' component. Investigation required into the Redux state selector for swarm positions.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "debugging",
+      "swarm"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-20T11:00:00Z",
+    "updated_at": "2026-03-25T17:00:00Z",
+    "resolved_at": "2026-03-25T17:00:00Z"
+  },
+  {
+    "key": "TEST-84",
+    "summary": "Initial Serial Driver for GPS Module (RS-232 era)",
+    "description": "Legacy GPS driver from 2017 for early avionics testing. Written for a DOS-based environment and uses raw serial interrupts. Significant as the first code that provided GPS coordinates for our software stack.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "gps"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2017-11-05T09:00:00Z",
+    "updated_at": "2017-12-15T12:00:00Z",
+    "resolved_at": "2017-12-15T12:00:00Z"
+  },
+  {
+    "key": "TEST-85",
+    "summary": "Implement Python logic for automated swarm formation planning",
+    "description": "Create a service that generates optimal formation paths for a UAV swarm based on mission objectives (e.g., surveillance coverage vs. fuel efficiency). The service must take into account individual UAV fuel constraints and communication ranges.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2025-08-01T10:00:00Z",
+    "updated_at": "2025-08-20T16:00:00Z",
+    "resolved_at": "2025-08-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-86",
+    "summary": "Annual Leave - Eid al-Fitr",
+    "description": "Developer is out of office for religious holidays. All tasks related to the AI Target Recognition dashboard have been handed over to the frontend lead. Returning in early May.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "To Do",
+    "labels": [
+      "izin",
+      "admin"
+    ],
+    "story_points": 1,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-01T09:00:00Z",
+    "updated_at": "2026-04-03T09:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-87",
+    "summary": "Initial TB2 Telemetry Protocol (Binary format)",
+    "description": "The first definition of the binary telemetry protocol used by the TB2 fleet. This document served as the blueprint for all GCS and onboard software for the first five years of production. Historically critical for protocol compatibility.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "telemetry",
+      "design"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2018-02-10T10:00:00Z",
+    "updated_at": "2018-03-15T14:00:00Z",
+    "resolved_at": "2018-03-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-88",
+    "summary": "Optimize Python serial communication for multi-payload control",
+    "description": "Concurrent payload control is causing packet drops in the serial driver. Refactor the Python serial interface to use non-blocking I/O and implement a priority-based queue to ensure flight-critical gimbal commands are always sent first.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "performance",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-02-20T11:00:00Z",
+    "updated_at": "2026-03-05T17:00:00Z",
+    "resolved_at": "2026-03-05T17:00:00Z"
+  },
+  {
+    "key": "TEST-89",
+    "summary": "Integrate Google Maps Terrain API for GCS 3D View",
+    "description": "Enhance the GCS 3D mission preview by integrating high-resolution terrain data from Google Maps. This will allow pilots to visualize terrain-hugging flight paths and identify potential collision risks with mountains or urban structures.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "api",
+      "geospatial"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-02-15T13:00:00Z",
+    "updated_at": "2026-02-28T10:00:00Z",
+    "resolved_at": "2026-02-28T10:00:00Z"
+  },
+  {
+    "key": "TEST-90",
+    "summary": "Initial GCS User Manual (HTML/Basic)",
+    "description": "The first digital user manual for the TB2 GCS software. Historically relevant for understanding how the software's UI and workflow have evolved over the years. This documentation is now archived.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "documentation",
+      "admin"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2019-06-15T09:00:00Z",
+    "updated_at": "2019-07-20T12:00:00Z",
+    "resolved_at": "2019-07-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-91",
+    "summary": "Implement Python logic for automated payload power management",
+    "description": "Create a service that dynamically powers down non-essential payloads (e.g., thermal cameras during daytime) based on mission parameters and remaining battery life. The goal is to extend the UAV endurance for long-duration surveillance.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "avionics",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2025-11-05T10:00:00Z",
+    "updated_at": "2025-11-15T16:00:00Z",
+    "resolved_at": "2025-11-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-92",
+    "summary": "Fix React performance bug in swarm position interpolation",
+    "description": "Smooth position updates for a 10-UAV swarm are causing the React UI thread to hang. Need to move the position interpolation logic to a Web Worker to offload the main thread and maintain a 60FPS refresh rate for the map.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "performance",
+      "swarm"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-02-15T11:00:00Z",
+    "updated_at": "2026-02-25T17:00:00Z",
+    "resolved_at": "2026-02-25T17:00:00Z"
+  },
+  {
+    "key": "TEST-93",
+    "summary": "Initial Serial Port Interface library (Win32 API)",
+    "description": "Legacy library for serial communication built using direct Win32 API calls. Used in the very first GCS prototypes for communication with the flight controller via a physical COM port. This is where our communication stack began.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2018-07-10T10:00:00Z",
+    "updated_at": "2018-08-25T16:00:00Z",
+    "resolved_at": "2018-08-25T16:00:00Z"
+  },
+  {
+    "key": "TEST-94",
+    "summary": "Implement Python logic for automated İHA takeoff sequence",
+    "description": "Develop the high-level logic for the autonomous takeoff sequence, including runway alignment, engine ramp-up, and rotation. The service must monitor telemetry in real-time and trigger an immediate abort if any engine anomalies are detected.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "algorithms",
+      "safety"
+    ],
+    "story_points": 13,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-12T10:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-95",
+    "summary": "Unit Tests for MAVLink protocol definitions (XML based)",
+    "description": "Legacy task from 2022. Add automated tests to verify that our custom XML MAVLink definitions are valid and consistent with the core protocol. This ensures that any new payload messages do not break existing telemetry streams.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "mavlink",
+      "testing"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2022-11-15T10:00:00Z",
+    "updated_at": "2022-11-20T12:00:00Z",
+    "resolved_at": "2022-11-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-96",
+    "summary": "Implement Python script for automated flight data extraction for AI training",
+    "description": "Create a tool to extract high-quality mission segments (e.g., successful target tracking events) from the historical flight database. The script will be used to generate training datasets for our next-generation AI computer vision models.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "ai",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2026-01-20T09:00:00Z",
+    "updated_at": "2026-01-30T14:00:00Z",
+    "resolved_at": "2026-01-30T14:00:00Z"
+  },
+  {
+    "key": "TEST-97",
+    "summary": "Initial GCS Splash Screen and Branding (Flash)",
+    "description": "Original splash screen and branding assets from 2018. Built with Adobe Flash. Historically interesting as it shows the original project name and logo before the official Bayraktar branding was finalized.",
+    "issuetype": "Task",
+    "priority": "Lowest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "design",
+      "admin"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2018-09-05T10:00:00Z",
+    "updated_at": "2018-09-10T16:00:00Z",
+    "resolved_at": "2018-09-10T16:00:00Z"
+  },
+  {
+    "key": "TEST-98",
+    "summary": "Develop React component for Electronic Jamming (EW) status indicator",
+    "description": "The mission planner needs a clear visual indicator of the UAV's electronic jamming status. Component should show active frequencies, power levels, and potential interference with GCS communication links. Crucial for EW mission operators.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "sigint"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-05T11:00:00Z",
+    "updated_at": "2026-03-15T17:00:00Z",
+    "resolved_at": "2026-03-15T17:00:00Z"
+  },
+  {
+    "key": "TEST-99",
+    "summary": "Implement Python-based tool for automated GCS system diagnostic",
+    "description": "Create a script that performs a complete diagnostic of the GCS hardware and software environment before a mission. Must check network latency, disk health, and verify that all necessary backend services are running and responsive.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "infrastructure",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-28T10:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-100",
+    "summary": "Refactor Swarm leader assignment logic to prioritize fuel efficiency",
+    "description": "The current swarm leader assignment is static. We need to implement a dynamic assignment logic that selects the leader based on the highest remaining fuel and strongest radio link. This requires updating the mission backend logic and the React frontend state.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "algorithms",
+      "python",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": null,
+    "created_at": "2026-04-03T11:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-101",
+    "summary": "Migrate GCS Backend to Pydantic v2 for faster telemetry serialization",
+    "description": "The current Pydantic v1 models are causing a bottleneck during high-frequency telemetry ingestion from the Akıncı fleet. We need to migrate to v2 to leverage the Rust-based core for faster validation. This impacts all 50+ telemetry models in the 'core-avionics' package.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "pydantic",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2024-08-12T10:00:00Z",
+    "updated_at": "2024-08-20T14:30:00Z",
+    "resolved_at": "2024-08-20T14:30:00Z"
+  },
+  {
+    "key": "TEST-102",
+    "summary": "Implement TimescaleDB hypertables for flight log partitioning",
+    "description": "Standard PostgreSQL tables are struggling with the 5TB flight log database. We need to implement TimescaleDB to allow for efficient time-series partitioning. This will allow the mission control team to query specific altitude fluctuations over 12-hour windows instantly.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "postgresql",
+      "timescaledb",
+      "database"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2025-02-05T09:00:00Z",
+    "updated_at": "2025-02-15T11:00:00Z",
+    "resolved_at": "2025-02-15T11:00:00Z"
+  },
+  {
+    "key": "TEST-103",
+    "summary": "Refactor asyncpg connection pooling for GCS microservices",
+    "description": "Under heavy simulation load, the FastAPI service is exhausting the PostgreSQL connection pool. We need to optimize the 'asyncpg' pool settings and ensure connections are released correctly in the middleware. This is critical for maintaining 100% telemetry reliability.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "fastapi",
+      "postgresql"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2025-10-10T14:00:00Z",
+    "updated_at": "2025-10-12T17:00:00Z",
+    "resolved_at": "2025-10-12T17:00:00Z"
+  },
+  {
+    "key": "TEST-104",
+    "summary": "Implement SAR Image reconstruction pipeline using CUDA",
+    "description": "Synthetic Aperture Radar (SAR) data needs real-time reconstruction on the ground server. We are moving the Python-based CPU implementation to a CUDA-accelerated C++ kernel. This requires deep knowledge of signal processing and GPU memory management.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "cuda",
+      "cpp",
+      "sar"
+    ],
+    "story_points": 13,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-10T09:00:00Z",
+    "updated_at": "2026-04-01T15:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-105",
+    "summary": "Architect DO-178C compliant logging system for avionics",
+    "description": "We need a logging architecture that meets the DO-178C software integrity standards for flight-critical code. Every bit written to the black box must be verifiable and traceable. This involves a custom C++ logging driver that bypasses standard OS buffers.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "compliance",
+      "avionics",
+      "cpp"
+    ],
+    "story_points": 13,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-20T10:00:00Z",
+    "updated_at": "2026-04-03T11:20:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-106",
+    "summary": "Develop React-Leaflet component for dynamic geofence drawing",
+    "description": "The mission planner needs a tool for operators to draw complex polygonal geofences on the map. The component must calculate the area in real-time and validate that the fence does not intersect with restricted airspaces (NOTAMs).",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "leaflet",
+      "frontend"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2026-01-20T08:00:00Z",
+    "updated_at": "2026-02-05T14:00:00Z",
+    "resolved_at": "2026-02-05T14:00:00Z"
+  },
+  {
+    "key": "TEST-107",
+    "summary": "User Out of Office - Ramadan Feast",
+    "description": "Public holiday leave for the developer. No assignments should be planned for this week. The developer will be checking high-severity GCS UI bugs intermittently.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "To Do",
+    "labels": [
+      "izin",
+      "leave",
+      "holiday"
+    ],
+    "story_points": 1,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-25T09:00:00Z",
+    "updated_at": "2026-04-03T08:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-108",
+    "summary": "Initial TB1 Analog Video Receiver Driver",
+    "description": "Legacy driver from 2022 for the analog video downlink on the early TB1 prototypes. Written in C using direct register access. This code is being maintained solely for legacy hardware support in the test labs.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "c",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2022-05-15T10:00:00Z",
+    "updated_at": "2022-06-20T14:00:00Z",
+    "resolved_at": "2022-06-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-109",
+    "summary": "Implement Python logic for automated flight plan generator",
+    "description": "Create a service that generates flight plans based on coverage area and sensor resolution. The logic must optimize for fuel efficiency and minimize the number of turns for the İHA. Output must be a valid MAVLink mission file.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "mavlink"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-05-10T09:00:00Z",
+    "updated_at": "2025-05-15T17:00:00Z",
+    "resolved_at": "2025-05-15T17:00:00Z"
+  },
+  {
+    "key": "TEST-110",
+    "summary": "Debug FastAPI timeout issues during large mission uploads",
+    "description": "The mission service is timing out when uploading complex multi-waypoint missions for global operations. Investigation shows the Pydantic validation is taking too long on the main thread. Need to move validation to a worker process.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "fastapi",
+      "debugging"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-10T11:00:00Z",
+    "updated_at": "2026-02-12T15:00:00Z",
+    "resolved_at": "2026-02-12T15:00:00Z"
+  },
+  {
+    "key": "TEST-111",
+    "summary": "Refactor GCS sidebar with Material UI v6",
+    "description": "Update the mission planner sidebar to the latest Material UI version. This includes moving to the new styling engine and ensuring all UAV status icons are SVG-based for better scaling on high-res GCS monitors.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "material-ui",
+      "frontend"
+    ],
+    "story_points": 2,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-01T09:00:00Z",
+    "updated_at": "2026-03-05T16:00:00Z",
+    "resolved_at": "2026-03-05T16:00:00Z"
+  },
+  {
+    "key": "TEST-112",
+    "summary": "Develop real-time target tracking overlay using WebGL",
+    "description": "The payload camera stream needs a low-latency overlay to display AI-detected targets. WebGL is required to render hundreds of tracking vectors without dropping frames from the 60FPS video source.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "webgl",
+      "video",
+      "performance"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-18T10:00:00Z",
+    "updated_at": "2026-04-02T14:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-113",
+    "summary": "Initial Magnetometer Calibration Script (Python 2.7)",
+    "description": "Historical script used for calibrating the HMC5883L magnetometer on early flight controllers. This script is written in Python 2.7 and uses the old serial library. Not to be used for active Akıncı production.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "python",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2021-11-10T09:00:00Z",
+    "updated_at": "2021-12-01T14:00:00Z",
+    "resolved_at": "2021-12-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-114",
+    "summary": "Implement Python-based MAVLink-to-ROS2 bridge",
+    "description": "For the new autonomous flight research, we need to bridge MAVLink telemetry into the ROS2 Humble ecosystem. The bridge must handle high-frequency attitude data and provide a standard ROS topic for mission control.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "ros2",
+      "mavlink"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2025-08-20T10:00:00Z",
+    "updated_at": "2025-09-05T16:00:00Z",
+    "resolved_at": "2025-09-05T16:00:00Z"
+  },
+  {
+    "key": "TEST-115",
+    "summary": "Fix React re-render bug in payload control panel",
+    "description": "Adjusting the camera gimbal angle is causing the entire GCS UI to freeze for 200ms. The state update logic in the gimbal component is inefficient. Need to implement 'useMemo' and 'React.memo' to isolate re-renders.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "performance",
+      "frontend"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-15T09:00:00Z",
+    "updated_at": "2026-02-20T14:00:00Z",
+    "resolved_at": "2026-02-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-116",
+    "summary": "Design encrypted satellite link communication protocol",
+    "description": "UAVs operating beyond line-of-sight (BLOS) require encrypted SATCOM links. Designing a custom protocol wrapper that adds AES-256-GCM encryption to standard telemetry packets without increasing latency beyond the 500ms SATCOM threshold.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "security",
+      "satcom",
+      "encryption"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-25T08:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-117",
+    "summary": "Initial 2D Moving Map (Flash/ActionScript)",
+    "description": "Extremely old map implementation from the first prototype years. Built with Flash and ActionScript 3.0. This is kept in the archives as a reference for how the original coordinate system was designed.",
+    "issuetype": "Task",
+    "priority": "Lowest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "flash",
+      "map"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2019-01-01T09:00:00Z",
+    "updated_at": "2019-03-01T14:00:00Z",
+    "resolved_at": "2019-03-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-118",
+    "summary": "Develop Python script for automated FCC firmware testing",
+    "description": "Automate the regression testing of the Flight Control Computer (FCC) firmware. The script should simulate thousands of takeoff/landing cycles and log any deviations in the PID controller response. Uses HIL simulation as the backend.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "testing",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2025-12-01T10:00:00Z",
+    "updated_at": "2025-12-15T16:00:00Z",
+    "resolved_at": "2025-12-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-119",
+    "summary": "Add Axios interceptors for automatic JWT refresh",
+    "description": "Ensure the GCS frontend stays logged in during long-endurance missions. Implement Axios interceptors to detect 401 errors and automatically call the FastAPI refresh token endpoint before retrying the original request.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "security",
+      "axios"
+    ],
+    "story_points": 2,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-10T13:00:00Z",
+    "updated_at": "2026-03-12T10:00:00Z",
+    "resolved_at": "2026-03-12T10:00:00Z"
+  },
+  {
+    "key": "TEST-120",
+    "summary": "Integrate 3D Terrain Data (SRTM) into GCS Map",
+    "description": "The mission planner needs to display terrain elevation to prevent geofence altitude violations. We are integrating NASA SRTM data into our custom map server. This requires optimized spatial indexing in PostgreSQL using PostGIS.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "postgis",
+      "geospatial",
+      "postgresql"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-22T09:00:00Z",
+    "updated_at": "2026-04-01T17:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-121",
+    "summary": "Update GCS UI for TB3 folding wing mechanism",
+    "description": "The TB3 Naval UAV has folding wings for carrier operations. The GCS needs a dedicated status indicator and manual control lock for the folding mechanism. Requires new SVG animations in the React dashboard.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "avionics"
+    ],
+    "story_points": 3,
+    "assignee": "dev_ai",
+    "created_at": "2025-11-20T10:00:00Z",
+    "updated_at": "2025-11-25T14:00:00Z",
+    "resolved_at": "2025-11-25T14:00:00Z"
+  },
+  {
+    "key": "TEST-122",
+    "summary": "Medical Leave - Quarantine",
+    "description": "Developer is working remotely or unavailable due to mandatory health guidelines. No hardware-dependent tasks should be assigned as they lack access to the GCS simulators at Gebze Technical Campus.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "In Progress",
+    "labels": [
+      "izin",
+      "remote"
+    ],
+    "story_points": 1,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-01T09:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-123",
+    "summary": "Initial C++ Driver for ADIS16448 IMU",
+    "description": "Low-level driver for the high-precision IMU used in the 2021 Bayraktar flight computers. Uses SPI communication and involves complex bit-shifting for raw data conversion. This is the gold standard for our legacy IMU support.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "cpp",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2021-03-05T09:00:00Z",
+    "updated_at": "2021-04-10T14:00:00Z",
+    "resolved_at": "2021-04-10T14:00:00Z"
+  },
+  {
+    "key": "TEST-124",
+    "summary": "Implement Python-based Telemetry health monitoring service",
+    "description": "Create a background service that analyzes live telemetry for 'sanity' (e.g., checking if the drone altitude is physically possible). If an anomaly is detected, the service must trigger a high-priority alert on the GCS frontend via WebSockets.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "telemetry",
+      "health"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-06-15T10:00:00Z",
+    "updated_at": "2025-06-25T16:00:00Z",
+    "resolved_at": "2025-06-25T16:00:00Z"
+  },
+  {
+    "key": "TEST-125",
+    "summary": "Fix broken 'Add Waypoint' tooltip in React map",
+    "description": "A minor UI bug where the tooltip for adding a waypoint is stuck at the top-left of the screen. Need to fix the relative positioning in the CSS file for the MapContainer component.",
+    "issuetype": "Bug",
+    "priority": "Lowest",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 1,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-25T14:00:00Z",
+    "updated_at": "2026-03-26T10:00:00Z",
+    "resolved_at": "2026-03-26T10:00:00Z"
+  },
+  {
+    "key": "TEST-126",
+    "summary": "Architect centralized flight log aggregation for global fleet",
+    "description": "Design a system that pulls logs from multiple regional GCS stations into a single central data lake in Istanbul. Must handle unreliable network connections and use efficient delta-syncing to minimize satellite bandwidth costs.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "data"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-29T10:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-127",
+    "summary": "Implement Python script for KML to MAVLink mission conversion",
+    "description": "Operators often create mission paths in Google Earth. This script must parse KML files and convert them into our custom MAVLink mission format, automatically adding takeoff and landing waypoints based on the local runway coordinates.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "geospatial",
+      "mavlink"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2025-10-01T09:00:00Z",
+    "updated_at": "2025-10-05T14:00:00Z",
+    "resolved_at": "2025-10-05T14:00:00Z"
+  },
+  {
+    "key": "TEST-128",
+    "summary": "Initial GPS/INS EKF Fusion Algorithm (MATLAB/C)",
+    "description": "The first version of our Extended Kalman Filter (EKF) for fusing GPS and Inertial data. Historically significant as it allowed for the first fully autonomous landing of a TB2. Highly complex mathematical implementation.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "algorithms",
+      "c"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2020-05-10T10:00:00Z",
+    "updated_at": "2020-07-20T16:00:00Z",
+    "resolved_at": "2020-07-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-129",
+    "summary": "Develop React dashboard for TB2 fuel management",
+    "description": "Build a specific GCS dashboard that monitors fuel flow, tank balance, and remaining endurance. Component must include a visual 'Safe Return' radius on the map based on current fuel levels and wind speed data.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "algorithms"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2025-12-10T09:00:00Z",
+    "updated_at": "2026-01-10T15:00:00Z",
+    "resolved_at": "2026-01-10T15:00:00Z"
+  },
+  {
+    "key": "TEST-130",
+    "summary": "Refactor FastAPI auth to support Turkish Government SSO",
+    "description": "Integrate the official government single sign-on (SSO) for GCS operators. This requires implementing OpenID Connect (OIDC) in our FastAPI backend and adding the necessary redirect logic in the React frontend.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "security",
+      "fastapi",
+      "oidc"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2025-11-01T10:00:00Z",
+    "updated_at": "2025-11-15T14:00:00Z",
+    "resolved_at": "2025-11-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-131",
+    "summary": "Fix GCS WebSocket disconnects in high-latency environments",
+    "description": "When the drone is at the edge of the radio link, the WebSockets are dropping. Need to implement a robust heartbeat and automatic reconnection logic with exponential backoff on the React frontend.",
+    "issuetype": "Bug",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "websocket",
+      "react",
+      "reliability"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-30T10:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-132",
+    "summary": "Initial Serial Bootloader for STM32 Controllers",
+    "description": "Legacy bootloader code for our first generation of custom flight control boards. Written in C and assembly. It allowed for firmware updates without opening the aircraft's avionics bay.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "c",
+      "firmware"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2021-06-15T09:00:00Z",
+    "updated_at": "2021-07-20T12:00:00Z",
+    "resolved_at": "2021-07-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-133",
+    "summary": "Implement Python logic for mission playback feature",
+    "description": "Create a service that can 'replay' a mission log file into the GCS as if it were a live flight. This is essential for post-mission briefings and pilot training. Must support scrubbing and speed control (2x, 4x, etc.).",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "telemetry",
+      "training"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2025-07-10T10:00:00Z",
+    "updated_at": "2025-07-25T16:00:00Z",
+    "resolved_at": "2025-07-25T16:00:00Z"
+  },
+  {
+    "key": "TEST-134",
+    "summary": "Fix GCS dashboard layout on 1440p monitors",
+    "description": "The flexbox layout for the telemetry widgets is breaking on high-resolution screens, leaving empty gaps. Need to adjust the grid settings and ensure widgets scale proportionally without overlapping.",
+    "issuetype": "Bug",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 2,
+    "assignee": "dev_hardware",
+    "created_at": "2026-02-05T13:00:00Z",
+    "updated_at": "2026-02-10T10:00:00Z",
+    "resolved_at": "2026-02-10T10:00:00Z"
+  },
+  {
+    "key": "TEST-135",
+    "summary": "User Away - National Sovereignty and Children's Day",
+    "description": "Developer is out of office for the April 23rd public holiday. No critical deployments should be scheduled. The developer will be unreachable for the duration of the day.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "To Do",
+    "labels": [
+      "izin",
+      "holiday"
+    ],
+    "story_points": 1,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-30T09:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-136",
+    "summary": "Initial PID Tuning Interface (Python/Tkinter)",
+    "description": "Very old UI tool built with Tkinter for flight test engineers to adjust PID gains in real-time. This is a historical relic from the time before we had a proper integrated GCS environment.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "python",
+      "avionics"
+    ],
+    "story_points": 3,
+    "assignee": "dev_ai",
+    "created_at": "2020-02-15T10:00:00Z",
+    "updated_at": "2020-03-01T14:00:00Z",
+    "resolved_at": "2020-03-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-137",
+    "summary": "Refactor FastAPI error handlers for MAVLink exceptions",
+    "description": "Standardize how our backend microservices report MAVLink communication errors. Implement a global exception handler in FastAPI that converts binary errors into human-readable JSON messages for the frontend.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "python",
+      "mavlink"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2026-01-20T11:00:00Z",
+    "updated_at": "2026-01-25T17:00:00Z",
+    "resolved_at": "2026-01-25T17:00:00Z"
+  },
+  {
+    "key": "TEST-138",
+    "summary": "Initial Flight Simulator Bridge (UDP)",
+    "description": "First attempt at bridging our software stack with the X-Plane flight simulator in 2021. Uses raw UDP packets and a custom C++ translation layer. This was the foundation of our current HIL testing suite.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "simulation",
+      "cpp"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2021-05-10T09:00:00Z",
+    "updated_at": "2021-06-15T14:00:00Z",
+    "resolved_at": "2021-06-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-139",
+    "summary": "Implement React component for SATCOM signal strength indicator",
+    "description": "The mission planner needs a specialized indicator for SATCOM links, including jitter and packet loss metrics. The component should change color based on link quality to alert pilots of potential signal degradation.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "satcom"
+    ],
+    "story_points": 3,
+    "assignee": "dev_hardware",
+    "created_at": "2026-01-05T13:00:00Z",
+    "updated_at": "2026-01-10T10:00:00Z",
+    "resolved_at": "2026-01-10T10:00:00Z"
+  },
+  {
+    "key": "TEST-140",
+    "summary": "Architect failover cluster for mission-critical Redis cache",
+    "description": "Telemetry data must never be lost due to a Redis crash. Design a Redis Sentinel cluster across three backend nodes to ensure high availability and automatic failover. Must be compatible with our existing Python asyncio client.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "redis"
+    ],
+    "story_points": 13,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-27T09:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-141",
+    "summary": "Initial Battery Management System (BMS) Logger",
+    "description": "Simple logging script from 2021 for tracking battery voltage and temperature during test flights. Uses a basic CSV format and was eventually integrated into the main telemetry stream.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "python",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_ai",
+    "created_at": "2021-08-15T10:00:00Z",
+    "updated_at": "2021-08-20T12:00:00Z",
+    "resolved_at": "2021-08-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-142",
+    "summary": "Implement Python script for mission database backup to S3",
+    "description": "Automate the nightly backup of all mission flight plans to an S3-compatible storage. The script must encrypt the backups and generate a verification report every morning for the IT compliance team.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "python",
+      "infrastructure",
+      "backup"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2025-04-10T10:00:00Z",
+    "updated_at": "2025-04-15T16:00:00Z",
+    "resolved_at": "2025-04-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-143",
+    "summary": "Fix React state sync issue between map and mission list",
+    "description": "Deleting a waypoint from the mission list is not removing the marker from the map until the page is refreshed. Need to fix the state synchronization between the two sibling components in the React tree.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "debugging"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-20T11:00:00Z",
+    "updated_at": "2026-03-22T17:00:00Z",
+    "resolved_at": "2026-03-22T17:00:00Z"
+  },
+  {
+    "key": "TEST-144",
+    "summary": "Initial MAVLink Packet Parser (C#)",
+    "description": "Historically significant C# implementation of a MAVLink parser used for an early Windows-based GCS prototype in 2020. This is the source code that we eventually ported to Python and C++.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "csharp",
+      "mavlink"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2020-06-15T09:00:00Z",
+    "updated_at": "2020-07-20T12:00:00Z",
+    "resolved_at": "2020-07-20T12:00:00Z"
+  },
+  {
+    "key": "TEST-145",
+    "summary": "Develop Python tool for mission log anonymization",
+    "description": "Before flight logs can be shared with external research partners, sensitive data (GPS home coordinates, pilot IDs) must be scrubbed. Implement a tool that identifies and anonymizes these fields in JSON and CSV exports.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "security",
+      "data"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2025-11-10T09:00:00Z",
+    "updated_at": "2025-11-20T14:00:00Z",
+    "resolved_at": "2025-11-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-146",
+    "summary": "Fix broken React build in CI/CD pipeline",
+    "description": "The Jenkins build for the GCS frontend is failing because of a linting error in a newly added telemetry component. Need to fix the linting issues and ensure the CI/CD pipeline passes before the next sprint starts.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "infrastructure",
+      "jenkins"
+    ],
+    "story_points": 2,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-28T14:00:00Z",
+    "updated_at": "2026-03-30T10:00:00Z",
+    "resolved_at": "2026-03-30T10:00:00Z"
+  },
+  {
+    "key": "TEST-147",
+    "summary": "Initial PID Control Loop for TB2 Altitude Hold",
+    "description": "The first version of the C-based altitude hold logic from 2021. This code was rigorously tested in wind tunnels and flight trials. It is a critical piece of our flight control history.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "legacy",
+      "algorithms",
+      "c"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2021-02-10T10:00:00Z",
+    "updated_at": "2021-04-15T16:00:00Z",
+    "resolved_at": "2021-04-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-148",
+    "summary": "Implement Python logic for gimbal 'Point of Interest' (POI) tracking",
+    "description": "Create a feature where the pilot can select a GPS coordinate on the map, and the gimbal will automatically stay focused on that point regardless of the İHA's movement. Involves real-time coordinate transformations and PID control.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "gimbal"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2025-02-20T10:00:00Z",
+    "updated_at": "2025-03-15T16:00:00Z",
+    "resolved_at": "2025-03-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-149",
+    "summary": "Fix CSS hover effects on GCS mission selection menu",
+    "description": "The hover color on the mission selection menu is too light, making it difficult to see which mission is being selected in bright cockpit environments. Increase the contrast ratio in the CSS theme.",
+    "issuetype": "Bug",
+    "priority": "Lowest",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 1,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-25T13:00:00Z",
+    "updated_at": "2026-03-27T10:00:00Z",
+    "resolved_at": "2026-03-27T10:00:00Z"
+  },
+  {
+    "key": "TEST-150",
+    "summary": "Develop React-based 'Flight Horizon' indicator using Canvas API",
+    "description": "We need a high-performance flight horizon indicator for the GCS dashboard. The current SVG-based version is causing UI lag. We must switch to a custom Canvas-based implementation to achieve a smooth 60FPS refresh rate for attitude telemetry.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "canvas",
+      "frontend"
+    ],
+    "story_points": 5,
+    "assignee": null,
+    "created_at": "2026-04-03T11:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-151",
+    "summary": "Implement Python-based A* pathfinding for low-altitude terrain masking",
+    "description": "Develop a service to calculate flight paths that utilize terrain features (valleys, ridges) to minimize radar cross-section visibility. Integration with the NASA SRTM elevation dataset and mission planner is required.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "algorithms",
+      "stealth"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-03T12:00:00Z",
+    "updated_at": "2026-04-03T12:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-152",
+    "summary": "Develop React component for Kızılelma engine turbine temperature monitoring",
+    "description": "Create a high-fidelity gauge component for the turbofan engine of the Kızılelma. Must handle high-frequency EGT (Exhaust Gas Temperature) data and provide visual threshold warnings for critical heat levels.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "frontend",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-03T12:30:00Z",
+    "updated_at": "2026-04-03T12:30:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-153",
+    "summary": "Optimize CUDA kernels for real-time IR video denoising",
+    "description": "The Infrared (IR) feed from the TB3's payload is noisy in high-humidity conditions. Refactor existing C++/CUDA kernels to implement an adaptive median filter for real-time noise reduction at 60FPS.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "cuda",
+      "cpp",
+      "vision"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-01T09:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-154",
+    "summary": "Fix FastAPI validation error for encrypted EW payload packets",
+    "description": "The backend is rejecting valid MAVLink packets from the EW suite due to a schema mismatch in Pydantic. Need to update the payload model to support variable-length bitstreams used in frequency hopping reports.",
+    "issuetype": "Bug",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "python",
+      "sigint"
+    ],
+    "story_points": 3,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-28T14:00:00Z",
+    "updated_at": "2026-04-02T16:00:00Z",
+    "resolved_at": "2026-04-02T16:00:00Z"
+  },
+  {
+    "key": "TEST-155",
+    "summary": "Implement Redux state for TB3 landing gear hydraulic pressure",
+    "description": "Add a dedicated slice to manage the status of hydraulic actuators. UI must reflect the transition states (Deploying/Retracting) and alert if pressure drops below 2500 PSI during carrier approach.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "redux",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-15T10:00:00Z",
+    "updated_at": "2026-03-20T14:00:00Z",
+    "resolved_at": "2026-03-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-156",
+    "summary": "Architect multi-tenant Redis layer for regional GCS clusters",
+    "description": "Design a Redis architecture that allows multiple regional ground stations to share a global telemetry cache without data collisions. Use key-prefixing based on UAV-ID and Station-ID.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "redis"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-03T11:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-157",
+    "summary": "Implement Python logic for automated icing detection",
+    "description": "Monitor pitot tube pressure and outside air temperature (OAT) to identify potential icing conditions on the wings. Logic should trigger the de-icing heaters via MAVLink command if parameters stay in the danger zone for >30s.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "avionics",
+      "safety"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2026-02-10T09:00:00Z",
+    "updated_at": "2026-03-05T12:00:00Z",
+    "resolved_at": "2026-03-05T12:00:00Z"
+  },
+  {
+    "key": "TEST-158",
+    "summary": "Integrate OpenWeatherMap API for dynamic GCS flight planning",
+    "description": "Fetch real-time wind vectors at different flight levels (FL100, FL200) to adjust the expected time of arrival (ETA) in the mission planner. Rendering of isobar charts on the map is required.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "api",
+      "geospatial"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-01-20T11:00:00Z",
+    "updated_at": "2026-02-15T10:00:00Z",
+    "resolved_at": "2026-02-15T10:00:00Z"
+  },
+  {
+    "key": "TEST-159",
+    "summary": "Develop Python script for automated TB2 center-of-gravity (CoG) calculation",
+    "description": "Build a utility to calculate CoG based on payload configuration (MAM-L, MAM-C, fuel weight). Tool must warn if the configuration exceeds the pitch-moment envelope for safe autonomous takeoff.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "avionics",
+      "algorithms"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-03T13:00:00Z",
+    "updated_at": "2026-04-03T13:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-160",
+    "summary": "Fix Three.js gimbal rotation jitter on 4K GCS monitors",
+    "description": "High-resolution rendering of the gimbal 3D model is stuttering when the aircraft performs a high-bank turn. Need to optimize the RAF (RequestAnimationFrame) loop and implement quaternions for smoother interpolation.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "In Progress",
+    "labels": [
+      "threejs",
+      "react",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-30T10:00:00Z",
+    "updated_at": "2026-04-02T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-161",
+    "summary": "Implement Python service for automated SIGINT emitter triangulation",
+    "description": "Utilize Time Difference of Arrival (TDOA) data from multiple UAVs in a swarm to triangulate the GPS coordinates of an enemy radar emitter. Expose the result as a target-pin on the GCS mission map.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "sigint",
+      "swarm"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-25T09:00:00Z",
+    "updated_at": "2026-04-03T09:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-162",
+    "summary": "Develop React dashboard for TB3 battery temperature balancing",
+    "description": "TB3 naval variant uses high-density LiPo packs. Dashboard needs to show individual cell voltages and temperatures to ensure even discharge during long-range BLOS maritime surveillance.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "telemetry",
+      "frontend"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2025-12-05T14:00:00Z",
+    "updated_at": "2026-01-20T16:00:00Z",
+    "resolved_at": "2026-01-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-163",
+    "summary": "Optimize PostgreSQL GiST index for global No-Fly Zone (NFZ) lookups",
+    "description": "Querying 50,000+ restricted airspaces is taking over 500ms. We need to implement spatial sharding and optimize the GiST index to bring the lookup time for a single mission path under 50ms.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "postgresql",
+      "database",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-02-15T10:00:00Z",
+    "updated_at": "2026-03-10T14:00:00Z",
+    "resolved_at": "2026-03-10T14:00:00Z"
+  },
+  {
+    "key": "TEST-164",
+    "summary": "Implement FIDO2 passkey support for GCS login",
+    "description": "Replace traditional passwords for GCS operators with hardware-backed FIDO2 passkeys. Service must integrate with the existing FastAPI auth module and support Yubico devices.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "security",
+      "fastapi",
+      "webauthn"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-03T11:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-165",
+    "summary": "Develop Python tool for TB2 parachute deployment simulation",
+    "description": "Simulate emergency parachute deployment at various altitudes and wind speeds. Tool must calculate the estimated landing zone (ELZ) to minimize the risk of the UAV drifting into civilian areas after an engine failure.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "simulation",
+      "safety"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2025-11-10T09:00:00Z",
+    "updated_at": "2025-12-15T16:00:00Z",
+    "resolved_at": "2025-12-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-166",
+    "summary": "Architect failover logic for dual-redundant SATCOM terminals",
+    "description": "Akıncı C-model uses two satellite terminals. Design an automated failover service that switches the telemetry stream to the secondary link if the primary SNR (Signal-to-Noise Ratio) drops below 10dB.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "satcom",
+      "reliability"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-20T08:00:00Z",
+    "updated_at": "2026-04-01T15:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-167",
+    "summary": "Fix memory leak in React mission playback component",
+    "description": "Scrubbing through a 12-hour flight log is causing the browser to crash. The issue is due to stale telemetry objects not being garbage collected in the playback buffer. Implement a sliding window cache.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "debugging",
+      "performance"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-10T11:00:00Z",
+    "updated_at": "2026-03-25T14:00:00Z",
+    "resolved_at": "2026-03-25T14:00:00Z"
+  },
+  {
+    "key": "TEST-168",
+    "summary": "Implement Python interface for controlling Akıncı EO/IR auto-track",
+    "description": "Expose a backend service to engage the 'Target Lock' feature on the vision payload. Service must confirm that the gimbal is in the correct mode and has a valid contrast-lock on the selected pixel coordinates.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "vision",
+      "mavlink"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-03T10:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-169",
+    "summary": "Develop React component for Electronic Emitter database search",
+    "description": "Create a tool for EW operators to search for detected frequencies against the global emitter library. UI must show match confidence and known radar platform types (e.g., SA-22, S-400).",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "sigint",
+      "frontend"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-28T09:00:00Z",
+    "updated_at": "2026-04-02T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-170",
+    "summary": "Optimize Python MAVLink encoder for low-bandwidth SATCOM",
+    "description": "During heavy interference, SATCOM bandwidth drops to 128kbps. Implement a 'Critical Only' mode for the Python encoder that strips non-essential telemetry (e.g., cabin temp, vibration data) to ensure flight commands reach the UAV.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "mavlink",
+      "satcom"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-01T09:00:00Z",
+    "updated_at": "2026-02-28T17:00:00Z",
+    "resolved_at": "2026-02-28T17:00:00Z"
+  },
+  {
+    "key": "TEST-171",
+    "summary": "Implement Redux state for automated carrier-landing glide slope",
+    "description": "Manage the vertical and lateral deviation status during naval approach. UI must display a 'Meatball' indicator that updates based on the UAV's relative position to the TB3 carrier deck's ideal touchdown point.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "redux",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-03T09:00:00Z",
+    "updated_at": "2026-04-03T09:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-172",
+    "summary": "Refactor FastAPI middleware for automated payload authorization",
+    "description": "Implement a permission layer that checks if the current GCS operator has the 'Weapon-Release-Authority' before allowing the backend to process firing commands. Essential for regulatory compliance.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "security",
+      "admin"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2025-10-15T10:00:00Z",
+    "updated_at": "2025-11-20T14:00:00Z",
+    "resolved_at": "2025-11-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-173",
+    "summary": "Develop Python script for automated TB3 stall recovery testing",
+    "description": "Automate the testing of the flight computer's Stall Protection System (SPS) in the HIL simulator. Script should deliberately induce low-speed conditions and verify that the autopilot correctly applies full-throttle and nose-down pitch.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "testing",
+      "safety"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2025-08-20T09:00:00Z",
+    "updated_at": "2025-09-15T12:00:00Z",
+    "resolved_at": "2025-09-15T12:00:00Z"
+  },
+  {
+    "key": "TEST-174",
+    "summary": "Integrate real-time Turkish FIR (Flight Information Region) NOTAMs",
+    "description": "Automatically ingest Notice to Airmen (NOTAM) from the General Directorate of State Airports (DHMİ) API and render temporary restricted areas on the mission map in real-time.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "api",
+      "geospatial"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-01-05T10:00:00Z",
+    "updated_at": "2026-01-25T14:00:00Z",
+    "resolved_at": "2026-01-25T14:00:00Z"
+  },
+  {
+    "key": "TEST-175",
+    "summary": "Implement Python-based health-check for TB3 folding-wing actuators",
+    "description": "Analyze the current-draw profiles of the wing-folding motors. If the torque required to fold the wings exceeds the historical baseline, flag a maintenance warning for mechanical wear or lubricant failure.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "telemetry",
+      "health"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-03T14:00:00Z",
+    "updated_at": "2026-04-03T14:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-176",
+    "summary": "Architect distributed mission log sync for Gebze-to-Istanbul clusters",
+    "description": "Design a resilient synchronization bridge between the development GCS at Gebze and the main data lake in Istanbul. Must handle multi-gigabyte daily flight logs and resume on network failure.",
+    "issuetype": "Epic",
+    "priority": "Medium",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "data"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-28T09:00:00Z",
+    "updated_at": "2026-04-02T16:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-177",
+    "summary": "Fix broken React map tooltip for swarm proximity alerts",
+    "description": "When two UAVs enter a critical proximity zone, the UI alert tooltip is not displaying the relative distance correctly. Need to fix the coordinate transformation logic in the React-Leaflet overlay layer.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "debugging",
+      "swarm"
+    ],
+    "story_points": 2,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-15T13:00:00Z",
+    "updated_at": "2026-03-18T10:00:00Z",
+    "resolved_at": "2026-03-18T10:00:00Z"
+  },
+  {
+    "key": "TEST-178",
+    "summary": "Develop Python script for automated TB2 laser seeker calibration",
+    "description": "Build a simulation script to verify that the MAM-L laser seeker correctly tracks a moving target in high-glare environments. Verification should compare the seeker's Reported Target Position with the Ground Truth coordinate.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "simulation",
+      "vision"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2025-11-25T10:00:00Z",
+    "updated_at": "2025-12-10T14:00:00Z",
+    "resolved_at": "2025-12-10T14:00:00Z"
+  },
+  {
+    "key": "TEST-179",
+    "summary": "Implement Redux state for Kızılelma super-cruise status",
+    "description": "Add state management for the turbofan afterburner engagement. UI must provide a 'Fuel Warning' if the afterburner is active for more than 5 minutes, as fuel consumption spikes by 300%.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "redux",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-03T14:30:00Z",
+    "updated_at": "2026-04-03T14:30:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-180",
+    "summary": "Optimize Python serial driver for TB3 tail-hook sensors",
+    "description": "The tail-hook sensor on the TB3 sends data at 200Hz during landing. Refactor the Python serial interface to use a dedicated thread with a ring buffer to prevent packet loss during the 3-second arrestor wire engagement.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "performance",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-01-10T09:00:00Z",
+    "updated_at": "2026-02-05T12:00:00Z",
+    "resolved_at": "2026-02-05T12:00:00Z"
+  },
+  {
+    "key": "TEST-181",
+    "summary": "Develop React component for Electronic Jamming 'Spectrum Mask'",
+    "description": "Create a visualization for EW operators showing which frequency bands are currently being jammed. Use a canvas-based spectral waterfall to display interference patterns in real-time.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "sigint",
+      "frontend"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-30T11:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-182",
+    "summary": "Implement Python-based mission validator for Akıncı-to-TB3 swarm",
+    "description": "Develop a service that validates mission plans where an Akıncı acts as the swarm leader for multiple TB3s. Must check that all TB3 waypoints are within the communication radius of the Akıncı.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-03T15:00:00Z",
+    "updated_at": "2026-04-03T15:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-183",
+    "summary": "Fix memory leak in FastAPI mission-log export service",
+    "description": "Exporting 24-hour logs in CSV format is causing the pod to exceed its 2GB RAM limit. Need to refactor the SQLAlchemy query to use a stream/iterator pattern instead of loading all rows into memory.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "sqlalchemy",
+      "performance"
+    ],
+    "story_points": 3,
+    "assignee": "dev_gcs",
+    "created_at": "2026-02-20T10:00:00Z",
+    "updated_at": "2026-02-28T14:00:00Z",
+    "resolved_at": "2026-02-28T14:00:00Z"
+  },
+  {
+    "key": "TEST-184",
+    "summary": "Develop Python script for automated TB3 catapult-launch simulation",
+    "description": "Simulate the high-G environment of a catapult launch. Verify that the flight control algorithms correctly suppress oscillation in the pitch-axis during the rapid acceleration from 0 to 120kts.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "simulation",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-25T09:00:00Z",
+    "updated_at": "2026-04-02T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-185",
+    "summary": "Integrate Airbus Satellite Imagery API into GCS mission planner",
+    "description": "Allow operators to pull high-resolution (30cm) satellite maps for specific mission zones. Integration must support tiling and offline caching for air-gapped GCS deployments.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "api",
+      "geospatial"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2025-11-05T10:00:00Z",
+    "updated_at": "2025-12-01T14:00:00Z",
+    "resolved_at": "2025-12-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-186",
+    "summary": "Implement Redux state for encrypted payload heartbeat",
+    "description": "Manage the status of the encryption module on the mission payload. UI must alert if the 'Keys-Loaded' flag is false or if the hardware security module (HSM) reports a tampering attempt.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "redux",
+      "security"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-03T15:30:00Z",
+    "updated_at": "2026-04-03T15:30:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-187",
+    "summary": "Architect high-availability database cluster for SAR image metadata",
+    "description": "SAR payloads generate millions of metadata points per hour. Design a PostgreSQL Citus cluster to horizontally scale write throughput and support multi-petabyte flight archives.",
+    "issuetype": "Epic",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "architecture",
+      "postgresql",
+      "data"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-03T11:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-188",
+    "summary": "Fix CSS alignment issues on GCS 'Weapon Selection' panel",
+    "description": "The icons for MAM-L and MAM-C are overlapping on the 10-inch tactical tablet used by field operators. Update the CSS grid to ensure a clear touch-target for each weapon station.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 1,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-25T09:00:00Z",
+    "updated_at": "2026-03-28T10:00:00Z",
+    "resolved_at": "2026-03-28T10:00:00Z"
+  },
+  {
+    "key": "TEST-189",
+    "summary": "Implement Python-based tool for automated TB2 flight-safety audit",
+    "description": "Create a script that analyzes flight logs for 'Pilot Errors' (e.g., exceeding G-limits, low-fuel maneuvering). Output is used for training GCS operators and improving mission safety protocols.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "telemetry",
+      "safety"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-12-01T10:00:00Z",
+    "updated_at": "2025-12-20T16:00:00Z",
+    "resolved_at": "2025-12-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-190",
+    "summary": "Develop React component for monitoring SATCOM antenna 'Pointing Error'",
+    "description": "Visualize the mechanical deviation of the satellite tracking unit. If the pointing error exceeds 0.5 degrees, the component must show a 'Link Stability Warning' to the GCS operator.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "satcom",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-01-15T09:00:00Z",
+    "updated_at": "2026-02-10T14:00:00Z",
+    "resolved_at": "2026-02-10T14:00:00Z"
+  },
+  {
+    "key": "TEST-191",
+    "summary": "Optimize Python-based imagery mosaic generator using Multiprocessing",
+    "description": "The imagery generator is too slow for 4K video frames. Implement a process pool to parallelize the tiling of EO (Electro-Optical) frames, targeting a 50% reduction in processing time.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "performance",
+      "video"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-03T16:00:00Z",
+    "updated_at": "2026-04-03T16:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-192",
+    "summary": "Refactor SQLAlchemy models for Akıncı-D engine telemetry sharding",
+    "description": "The new Akıncı-D variant adds 20 new engine sensors. Refactor the database schema to shard engine telemetry by UAV-Type to prevent the 'flights' table from becoming too sparse.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "sqlalchemy",
+      "postgresql",
+      "database"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-01-20T10:00:00Z",
+    "updated_at": "2026-02-05T14:00:00Z",
+    "resolved_at": "2026-02-05T14:00:00Z"
+  },
+  {
+    "key": "TEST-193",
+    "summary": "Develop React-Leaflet component for dynamic UAV 'Combat Radius' visualization",
+    "description": "Render a translucent circle on the map showing the UAV's maximum range based on current fuel, wind speed, and payload weight. Circle must update in real-time as fuel is consumed.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "leaflet",
+      "algorithms"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-30T09:00:00Z",
+    "updated_at": "2026-04-03T10:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-194",
+    "summary": "Fix memory corruption in Python MAVLink logger C-extension",
+    "description": "Intermittent crashes reported during high-volume telemetry ingestion. Investigation shows a buffer overflow in the custom C-extension used for parsing binary MAVLink streams. Implement strict bounds checking.",
+    "issuetype": "Bug",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "cpp",
+      "telemetry"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-02-15T09:00:00Z",
+    "updated_at": "2026-03-01T17:00:00Z",
+    "resolved_at": "2026-03-01T17:00:00Z"
+  },
+  {
+    "key": "TEST-195",
+    "summary": "Develop Python script for automated TB2 landing-gear cycle testing",
+    "description": "Automate the regression testing of the landing-gear deployment logic. Script should simulate gear-up/gear-down cycles in the HIL simulator and verify that the 'Gear-Locked' flag is set within 5 seconds.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "simulation",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2025-09-01T10:00:00Z",
+    "updated_at": "2025-09-20T14:00:00Z",
+    "resolved_at": "2025-09-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-196",
+    "summary": "Integrate real-time 'Solar Flare' alerts into GCS SATCOM panel",
+    "description": "Solar activity can disrupt SATCOM links. Integrate the NOAA Space Weather API to provide 15-minute advance warnings of potential signal degradation due to ionospheric disturbances.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "react",
+      "api",
+      "satcom"
+    ],
+    "story_points": 3,
+    "assignee": "dev_ai",
+    "created_at": "2026-01-20T11:00:00Z",
+    "updated_at": "2026-02-10T10:00:00Z",
+    "resolved_at": "2026-02-10T10:00:00Z"
+  },
+  {
+    "key": "TEST-197",
+    "summary": "Implement Redux state for automated TB3 'Deck-Pitch' compensation",
+    "description": "During carrier landings, the GCS must receive real-time deck movement data. UI must show the vertical distance between the tail-hook and the moving deck, accounting for ship pitch and heave.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "redux",
+      "avionics"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-03T16:30:00Z",
+    "updated_at": "2026-04-03T16:30:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-198",
+    "summary": "Architect distributed target recognition layer using Kubernetes and YOLOv10",
+    "description": "Design an auto-scaling cluster to process mission video feeds for target recognition. System must handle 50+ concurrent 1080p streams and perform inference with sub-100ms latency.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "kubernetes",
+      "ai"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-20T08:00:00Z",
+    "updated_at": "2026-04-03T11:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-199",
+    "summary": "Fix broken Material UI theme for 'Red-Out' night mode",
+    "description": "The night mode theme used by operators in dark GCS bunkers is too bright. Need to adjust the primary palette to deep-red (#8B0000) to preserve the operators' night vision during midnight sorties.",
+    "issuetype": "Bug",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "react",
+      "ux"
+    ],
+    "story_points": 2,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-10T14:00:00Z",
+    "updated_at": "2026-03-12T10:00:00Z",
+    "resolved_at": "2026-03-12T10:00:00Z"
+  },
+  {
+    "key": "TEST-200",
+    "summary": "Refactor legacy Python 2.7 magnetometer calibration script to 3.12",
+    "description": "The old HMC5883L calibration script is incompatible with modern Linux distros used in the Akıncı GCS. Refactor the serial communication code to use 'pyserial' and update the math to NumPy 2.0.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "legacy",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-03T17:00:00Z",
+    "updated_at": "2026-04-03T17:00:00Z",
+    "resolved_at": null
+  },
+  {
+    "key": "TEST-201",
+    "summary": "Implement decentralized dynamic task allocation for UAV Swarms",
+    "description": "Develop a decentralized logic where each UAV autonomously negotiates task assignments based on fuel levels and payload availability. Prototype must be validated in the swarm simulator before HIL testing.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-03T17:30:00Z"
+  },
+  {
+    "key": "TEST-202",
+    "summary": "Develop React dashboard for Akıncı B dual-engine synchronization",
+    "description": "Create a high-fidelity dashboard to monitor the RPM and torque balance of dual-engine configurations. Implement a visual warning system if the power differential exceeds 5%.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "frontend",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-04T09:00:00Z"
+  },
+  {
+    "key": "TEST-203",
+    "summary": "Optimize YOLOv10 target classification using TensorRT",
+    "description": "Refactor the onboard vision pipeline to utilize TensorRT for inference. Goal is to reduce end-to-end classification latency to sub-15ms for high-speed tracking during Kızılelma test flights.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "ai",
+      "cuda",
+      "vision"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-04T10:00:00Z"
+  },
+  {
+    "key": "TEST-204",
+    "summary": "Implement PostGIS-based landing site suitability analysis",
+    "description": "Develop a service that analyzes terrain slope and roughness from LIDAR data to identify the safest emergency landing points. Queries must return results in under 100ms.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "postgis",
+      "geospatial"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-04T11:00:00Z"
+  },
+  {
+    "key": "TEST-205",
+    "summary": "Update GCS UI for TB3 folding wing animation",
+    "description": "Integrate real-time wing-lock sensor data into a dynamic SVG animation on the mission dashboard. Clearly indicate state transitions (Unlocking, Folding, Locked) for naval operators.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "avionics"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-28T09:00:00Z",
+    "resolved_at": "2026-04-02T16:00:00Z"
+  },
+  {
+    "key": "TEST-206",
+    "summary": "Architect NATS JetStream bridge for multi-region GCS sync",
+    "description": "Design a high-throughput message bridge to synchronize mission states between the main data center and mobile GCS units in the field. Must handle high-latency SATCOM links gracefully.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "nats"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-01T08:00:00Z"
+  },
+  {
+    "key": "TEST-207",
+    "summary": "Debug SQLAlchemy deadlocks during high-frequency GPS ingestion",
+    "description": "Telemetry ingestion for the swarm project is causing row-level locks on the 'waypoint_status' table. Need to refactor the batch update logic to use an UPSERT pattern.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "sqlalchemy",
+      "postgresql",
+      "debugging"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-25T14:00:00Z",
+    "resolved_at": "2026-04-01T11:00:00Z"
+  },
+  {
+    "key": "TEST-208",
+    "summary": "Implement Python logic for automated icing-condition detection",
+    "description": "Use Pitot tube pressure and outside air temperature (OAT) sensors to detect wing icing. Automatically trigger the de-icing heaters via MAVLink command when parameters enter the danger zone.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "avionics",
+      "safety"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-05T09:00:00Z"
+  },
+  {
+    "key": "TEST-209",
+    "summary": "Develop React component for Electronic Warfare (EW) signal waterfall",
+    "description": "Build a Canvas-based spectral waterfall display for the SIGINT operator station. Must support real-time frequency hopping visualization and adaptive color scaling.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Review",
+    "labels": [
+      "react",
+      "sigint",
+      "canvas"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-01T13:00:00Z"
+  },
+  {
+    "key": "TEST-210",
+    "summary": "Architect hardware-in-the-loop (HIL) test suite for Kızılelma FCC",
+    "description": "Design an automated HIL environment that simulates supersonic flight dynamics for the Flight Control Computer (FCC). Integration with X-Plane 12 and custom aerodynamic models is required.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "simulation",
+      "avionics",
+      "cpp"
+    ],
+    "story_points": 13,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-15T10:00:00Z"
+  },
+  {
+    "key": "TEST-211",
+    "summary": "Implement AES-256-GCM encryption for SATCOM telemetry",
+    "description": "Develop a secure wrapper for standard MAVLink packets over SATCOM. Must handle dynamic key rotation without losing telemetry synchronization during link handover.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "security",
+      "satcom"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-06T09:00:00Z"
+  },
+  {
+    "key": "TEST-212",
+    "summary": "Fix React performance lag on 10+ UAV fleet view",
+    "description": "The GCS dashboard is dropping frames when rendering 10+ active UAV markers. Need to implement 'react-window' for the telemetry list and move marker interpolation to a Web Worker.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "performance",
+      "frontend"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-20T11:00:00Z",
+    "resolved_at": "2026-04-02T15:00:00Z"
+  },
+  {
+    "key": "TEST-213",
+    "summary": "Develop Python tool for automated pre-flight system diagnostics",
+    "description": "Build a script that performs a 'Go/No-Go' check on all mission systems. Script must verify sensor calibration, database connectivity, and SATCOM signal health before clearing the mission.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "infrastructure",
+      "safety"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-07T10:00:00Z"
+  },
+  {
+    "key": "TEST-214",
+    "summary": "Implement Redux state for TB3 tail-hook engagement status",
+    "description": "Add a centralized state slice to monitor the arrestor-hook status during carrier landings. Status should include hydraulic pressure and mechanical lock confirmation.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "redux",
+      "avionics"
+    ],
+    "story_points": 3,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-10T09:00:00Z",
+    "resolved_at": "2026-03-25T16:00:00Z"
+  },
+  {
+    "key": "TEST-215",
+    "summary": "Optimize PostgreSQL storage for high-res SAR metadata",
+    "description": "SAR payloads are generating terabytes of metadata. Implement table partitioning by 'mission_id' and move older data to a cold-storage S3 bucket via a Python background worker.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "In Progress",
+    "labels": [
+      "postgresql",
+      "database",
+      "data"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-216",
+    "summary": "Design encrypted communication protocol for Beyond Line of Sight (BLOS)",
+    "description": "Architect a resilient protocol that wraps standard packets in an encrypted layer with adaptive FEC (Forward Error Correction) to handle the 1-2 second latency of deep-field SATCOM.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "architecture",
+      "security",
+      "satcom"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-08T08:00:00Z"
+  },
+  {
+    "key": "TEST-217",
+    "summary": "Fix broken Axios interceptor for JWT token refresh in GCS Mobile",
+    "description": "The mobile GCS tablet is losing connection to the backend when the JWT expires during flight operations. Need to implement a reliable silent-refresh flow with exponential backoff.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "security",
+      "debugging"
+    ],
+    "story_points": 2,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-28T13:00:00Z",
+    "resolved_at": "2026-04-01T10:00:00Z"
+  },
+  {
+    "key": "TEST-218",
+    "summary": "Implement Python script for automated TB2 center-of-gravity (CoG) calculation",
+    "description": "Create a tool to calculate CoG based on current fuel weight and payload (MAM-L/MAM-C) configuration. Tool must warn the pilot if the CoG drifts outside the safe flight envelope.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "avionics",
+      "algorithms"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-05T11:00:00Z"
+  },
+  {
+    "key": "TEST-219",
+    "summary": "Develop React dashboard for monitoring UAV fleet battery health",
+    "description": "Build a health-score dashboard that tracks discharge cycles, internal resistance, and temperature for the LiPo batteries across the entire fleet. Integration with the maintenance API required.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "telemetry",
+      "frontend"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-10T10:00:00Z"
+  },
+  {
+    "key": "TEST-220",
+    "summary": "Optimize FastAPI telemetry ingestion using Pydantic v2 core",
+    "description": "Migration of 50+ telemetry models to Pydantic v2 to leverage the Rust-based validation engine. Target is to reduce CPU usage on the mission-backend pods by 30%.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "fastapi",
+      "python",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-01T09:00:00Z",
+    "resolved_at": "2026-03-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-221",
+    "summary": "Architect centralized flight log aggregation for Akıncı fleet",
+    "description": "Design a resilient data pipeline to ingest 10GB of flight logs per mission into a centralized TimescaleDB instance. System must ensure 100% data integrity for safety audit purposes.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "data"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-02T10:00:00Z"
+  },
+  {
+    "key": "TEST-222",
+    "summary": "Fix broken Material UI theme for night-operations mode",
+    "description": "The altitude gauges are too bright in high-contrast mode, causing eye strain for GCS operators in dark rooms. Adjust the primary palette and add a 'Red-Out' night theme option.",
+    "issuetype": "Bug",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "react",
+      "ux"
+    ],
+    "story_points": 2,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-15T13:00:00Z",
+    "resolved_at": "2026-03-20T10:00:00Z"
+  },
+  {
+    "key": "TEST-223",
+    "summary": "Implement Python logic for automated swarm formation planning",
+    "description": "Develop a service that generates optimal 3D flight paths for a swarm to maximize radar coverage while maintaining a safe relative distance. Use potential field algorithms for real-time adjustments.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-12T09:00:00Z"
+  },
+  {
+    "key": "TEST-224",
+    "summary": "Develop React component for MAVLink packet throughput monitoring",
+    "description": "Build a diagnostic panel for GCS engineers to monitor real-time packet loss and latency on each telemetry link. Component must use WebSockets for sub-100ms updates.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Review",
+    "labels": [
+      "react",
+      "websocket",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-05T14:00:00Z"
+  },
+  {
+    "key": "TEST-225",
+    "summary": "Implement FIDO2 passkey support for GCS mission coordinator login",
+    "description": "Enhance security for high-privilege GCS accounts by implementing FIDO2/WebAuthn hardware key support. Integration with the existing FastAPI auth module required.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "security",
+      "fastapi",
+      "webauthn"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-01T09:00:00Z"
+  },
+  {
+    "key": "TEST-226",
+    "summary": "Architect Kubernetes simulation environment for 500+ virtual UAVs",
+    "description": "Scale the SIL (Software-in-the-Loop) environment to support large-scale swarm simulations. Implement pod-affinity rules to ensure low-latency communication between simulated flight controllers.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "kubernetes",
+      "infrastructure",
+      "simulation"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-15T08:00:00Z"
+  },
+  {
+    "key": "TEST-227",
+    "summary": "Fix memory corruption in Python MAVLink parser C-extension",
+    "description": "The logging service is crashing intermittently when processing malformed packets from regional radio links. Need to implement strict bounds checking in the C-based packet parser.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "cpp",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-05T11:00:00Z",
+    "resolved_at": "2026-03-25T15:00:00Z"
+  },
+  {
+    "key": "TEST-228",
+    "summary": "Develop Python script for automated TB3 stall-recovery testing",
+    "description": "Automate the testing of the stall-protection logic in the HIL simulator. Script should vary air-speed and angle-of-attack (AoA) to verify that the autopilot correctly applies recovery maneuvers.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "testing",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-01T10:00:00Z"
+  },
+  {
+    "key": "TEST-229",
+    "summary": "Implement Redux state for encrypted mission parameter storage",
+    "description": "Ensure that sensitive mission parameters (targets, ROEs) are stored encrypted in the Redux store. Use a custom middleware to handle automatic encryption/decryption before persisting to local storage.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "redux",
+      "security"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-18T09:00:00Z"
+  },
+  {
+    "key": "TEST-230",
+    "summary": "Optimize PostgreSQL query for regional flight path intersection checks",
+    "description": "Improve performance for No-Fly Zone (NFZ) intersection checks. Implement GiST indexing on the geometry columns and refactor the PostGIS 'ST_Intersects' query for bulk mission uploads.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "postgresql",
+      "postgis",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-10T10:00:00Z",
+    "resolved_at": "2026-03-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-231",
+    "summary": "Architect distributed mission planning engine for long-range sorties",
+    "description": "Design a pathfinding engine that can distribute terrain-aware route calculations across multiple nodes. Must support wind-vector optimization and fuel-reserve calculations for 24-hour missions.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "algorithms",
+      "python"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-05T08:00:00Z"
+  },
+  {
+    "key": "TEST-232",
+    "summary": "Fix broken React map markers for swarm member UAVs",
+    "description": "In the multi-drone view, follower UAV markers are flickering during position updates. Need to implement memoization for the MapMarker component and optimize the coordinate projection logic.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "debugging",
+      "swarm"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-25T11:00:00Z",
+    "resolved_at": "2026-03-30T17:00:00Z"
+  },
+  {
+    "key": "TEST-233",
+    "summary": "Implement Python interface for controlling Akıncı engine-governor",
+    "description": "Develop a backend service to send secure MAVLink commands to the engine control unit (ECU). Service must verify safety interlocks before allowing manual RPM overrides via the GCS.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "avionics",
+      "security"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-20T10:00:00Z"
+  },
+  {
+    "key": "TEST-234",
+    "summary": "Develop React component for Electronic Jamming 'Spectrum Mask'",
+    "description": "Build a real-time monitor for the EW payload showing active frequency bands and power levels. Component must show an overlay of the 'jamming footprint' on the GCS primary map.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "sigint",
+      "frontend"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-03T11:00:00Z"
+  },
+  {
+    "key": "TEST-235",
+    "summary": "Optimize Python-based imagery mosaic generator using Multiprocessing",
+    "description": "The imagery generator is too slow for 4K video frames. Implement a process pool to parallelize the tiling of EO (Electro-Optical) frames, targeting a 50% reduction in processing time.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "performance",
+      "video"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-22T09:00:00Z"
+  },
+  {
+    "key": "TEST-236",
+    "summary": "Architect failover logic for dual-redundant SATCOM terminals",
+    "description": "Design an automated failover service that switches the telemetry stream to the secondary link if the primary SNR (Signal-to-Noise Ratio) drops below 10dB.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "architecture",
+      "satcom",
+      "reliability"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-25T08:00:00Z"
+  },
+  {
+    "key": "TEST-237",
+    "summary": "Fix memory leak in React mission playback component",
+    "description": "Scrubbing through a 12-hour flight log is causing the browser to crash. The issue is due to stale telemetry objects not being garbage collected in the playback buffer. Implement a sliding window cache.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "performance",
+      "debugging"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-20T11:00:00Z",
+    "resolved_at": "2026-04-01T14:00:00Z"
+  },
+  {
+    "key": "TEST-238",
+    "summary": "Implement Python service for automated SIGINT emitter triangulation",
+    "description": "Utilize Time Difference of Arrival (TDOA) data from multiple UAVs in a swarm to triangulate the GPS coordinates of an enemy radar emitter. Expose the result as a target-pin on the GCS mission map.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "sigint",
+      "swarm"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-25T09:00:00Z"
+  },
+  {
+    "key": "TEST-239",
+    "summary": "Develop React component for monitoring SATCOM antenna 'Pointing Error'",
+    "description": "Visualize the mechanical deviation of the satellite tracking unit. If the pointing error exceeds 0.5 degrees, the component must show a 'Link Stability Warning' to the GCS operator.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "satcom",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-01-15T09:00:00Z",
+    "resolved_at": "2026-02-10T14:00:00Z"
+  },
+  {
+    "key": "TEST-240",
+    "summary": "Optimize Python serial driver for TB3 tail-hook sensors",
+    "description": "The tail-hook sensor on the TB3 sends data at 200Hz during landing. Refactor the Python serial interface to use a dedicated thread with a ring buffer to prevent packet loss during the 3-second arrestor wire engagement.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "performance",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-01-10T09:00:00Z",
+    "resolved_at": "2026-02-05T12:00:00Z"
+  },
+  {
+    "key": "TEST-241",
+    "summary": "Implement Redux state for automated TB3 'Deck-Pitch' compensation",
+    "description": "During carrier landings, the GCS must receive real-time deck movement data. UI must show the vertical distance between the tail-hook and the moving deck, accounting for ship pitch and heave.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "redux",
+      "avionics"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-28T09:00:00Z"
+  },
+  {
+    "key": "TEST-242",
+    "summary": "Architect distributed target recognition layer using Kubernetes and YOLOv10",
+    "description": "Design an auto-scaling cluster to process mission video feeds for target recognition. System must handle 50+ concurrent 1080p streams and perform inference with sub-100ms latency.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "kubernetes",
+      "ai"
+    ],
+    "story_points": 13,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-20T08:00:00Z"
+  },
+  {
+    "key": "TEST-243",
+    "summary": "Fix CSS alignment issues on GCS 'Weapon Selection' panel",
+    "description": "The icons for MAM-L and MAM-C are overlapping on the 10-inch tactical tablet used by field operators. Update the CSS grid to ensure a clear touch-target for each weapon station.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 1,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-25T09:00:00Z",
+    "resolved_at": "2026-03-28T10:00:00Z"
+  },
+  {
+    "key": "TEST-244",
+    "summary": "Implement Python-based tool for automated TB2 flight-safety audit",
+    "description": "Create a script that analyzes flight logs for 'Pilot Errors' (e.g., exceeding G-limits, low-fuel maneuvering). Output is used for training GCS operators and improving mission safety protocols.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "telemetry",
+      "safety"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-12-01T10:00:00Z",
+    "resolved_at": "2025-12-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-245",
+    "summary": "Develop React-Leaflet component for dynamic UAV 'Combat Radius' visualization",
+    "description": "Render a translucent circle on the map showing the UAV's maximum range based on current fuel, wind speed, and payload weight. Circle must update in real-time as fuel is consumed.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "leaflet",
+      "algorithms"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-03T10:00:00Z"
+  },
+  {
+    "key": "TEST-246",
+    "summary": "Refactor SQLAlchemy models for Akıncı-D engine telemetry sharding",
+    "description": "The new Akıncı-D variant adds 20 new engine sensors. Refactor the database schema to shard engine telemetry by UAV-Type to prevent the 'flights' table from becoming too sparse.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "sqlalchemy",
+      "postgresql",
+      "database"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2026-01-20T10:00:00Z",
+    "resolved_at": "2026-02-05T14:00:00Z"
+  },
+  {
+    "key": "TEST-247",
+    "summary": "Integrate real-time 'Solar Flare' alerts into GCS SATCOM panel",
+    "description": "Solar activity can disrupt SATCOM links. Integrate the NOAA Space Weather API to provide 15-minute advance warnings of potential signal degradation due to ionospheric disturbances.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "react",
+      "api",
+      "satcom"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2026-01-20T11:00:00Z",
+    "resolved_at": "2026-02-10T10:00:00Z"
+  },
+  {
+    "key": "TEST-248",
+    "summary": "Develop Python script for automated TB3 catapult-launch simulation",
+    "description": "Simulate the high-G environment of a catapult launch. Verify that the flight control algorithms correctly suppress oscillation in the pitch-axis during the rapid acceleration from 0 to 120kts.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "simulation",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-25T09:00:00Z"
+  },
+  {
+    "key": "TEST-249",
+    "summary": "Fix broken React build in CI/CD pipeline",
+    "description": "The Jenkins build for the GCS frontend is failing because of a linting error in a newly added telemetry component. Need to fix the linting issues and ensure the CI/CD pipeline passes before the next sprint starts.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "infrastructure",
+      "jenkins"
+    ],
+    "story_points": 2,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-28T14:00:00Z",
+    "resolved_at": "2026-03-30T10:00:00Z"
+  },
+  {
+    "key": "TEST-250",
+    "summary": "Architect fault-tolerant telemetry ingestion using NATS JetStream",
+    "description": "Design a highly available telemetry ingestion pipeline using NATS JetStream. The system must guarantee 'at-least-once' delivery for flight-critical telemetry even during regional server failures.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "nats"
+    ],
+    "story_points": 13,
+    "assignee": "dev_testing",
+    "created_at": "2026-05-01T08:00:00Z"
+  },
+  {
+    "key": "TEST-251",
+    "summary": "Implement semantic search for mission incident reports using pgvector",
+    "description": "Develop a FastAPI endpoint to perform vector-based similarity searches on historical mission logs. Integration with the existing PostgreSQL database and pgvector extension is required to identify recurring flight anomalies.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "fastapi",
+      "pgvector",
+      "data"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-10T09:00:00Z"
+  },
+  {
+    "key": "TEST-252",
+    "summary": "Configure WireGuard VPN on Raspberry Pi 5 for secure remote GCS access",
+    "description": "Set up a secure tunnel using a Raspberry Pi 5 8GB to allow remote developers to access the GCS simulator securely. Must include MAC address filtering and automated peer rotation for network security.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "raspberry-pi",
+      "security",
+      "networking"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-10T11:00:00Z"
+  },
+  {
+    "key": "TEST-253",
+    "summary": "Implement Riverpod-based state management for mobile GCS tracking",
+    "description": "Refactor the Flutter-based mobile dashboard to use Riverpod for real-time telemetry state synchronization. Ensure smooth UI updates for the 'SafePass' style fleet tracking components.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "flutter",
+      "riverpod",
+      "frontend"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-11T10:00:00Z"
+  },
+  {
+    "key": "TEST-254",
+    "summary": "Architect HIL simulator environment for Gebze Technical campus testing",
+    "description": "Design a localized Hardware-in-the-Loop (HIL) setup for testing new avionics code on-site. Environment must simulate the unique terrain profiles of the Gebze region for landing-gear stress tests.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "simulation",
+      "avionics",
+      "gtu"
+    ],
+    "story_points": 13,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-12T08:00:00Z"
+  },
+  {
+    "key": "TEST-255",
+    "summary": "Refactor Linux signal handling for mission-critical microservices",
+    "description": "Implement robust signal handling in the mission backend to ensure graceful shutdowns and database persistence during emergency power cycles. Use sigsuspend patterns to avoid race conditions in the async event loop.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "python",
+      "linux",
+      "systems"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-20T14:00:00Z",
+    "resolved_at": "2026-04-05T16:00:00Z"
+  },
+  {
+    "key": "TEST-256",
+    "summary": "Implement Genetic Algorithm for multi-UAV flight path optimization",
+    "description": "Develop a Python-based pathfinding service utilizing Genetic Algorithms to optimize fuel efficiency for swarm missions. Logic should be adapted from the Teknofest smart transportation backend.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-13T09:00:00Z"
+  },
+  {
+    "key": "TEST-257",
+    "summary": "Integrate Jira API with automated task assignment tool",
+    "description": "Connect the custom task assignment backend to the Jira API to automate ticket creation for identified telemetry bugs. Ensure Docker Compose handles the database persistence for the mapping table.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "fastapi",
+      "jira",
+      "docker"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-04-14T10:00:00Z"
+  },
+  {
+    "key": "TEST-258",
+    "summary": "Develop React component for monitoring Kızılelma fuel-pump vibration",
+    "description": "Create a real-time visualization tool for engine fuel-pump telemetry. Implement a Predictive Maintenance model to trigger status alerts for aircraft in the fleet manager based on vibration signatures.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "telemetry",
+      "ai"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-15T11:00:00Z"
+  },
+  {
+    "key": "TEST-259",
+    "summary": "Optimize PostgreSQL JSONB indexing for SAR imagery metadata",
+    "description": "Improve query performance for high-resolution SAR imagery by optimizing JSONB indexes. Goal is to reduce reconstruction latency by 40% for mission operators.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "postgresql",
+      "database",
+      "performance"
+    ],
+    "story_points": 8,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-10T10:00:00Z",
+    "resolved_at": "2026-04-01T15:00:00Z"
+  },
+  {
+    "key": "TEST-260",
+    "summary": "Implement Pi-hole ad-blocking for secure mobile GCS network",
+    "description": "Deploy Pi-hole on the field GCS Raspberry Pi to prevent telemetry interference from unwanted DNS traffic. Must include automated MAC address spoofing detection for secure field operations.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "raspberry-pi",
+      "security",
+      "networking"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-15T09:00:00Z",
+    "resolved_at": "2026-03-20T11:00:00Z"
+  },
+  {
+    "key": "TEST-261",
+    "summary": "Architect DO-178C compliant logging for TB3 naval variant",
+    "description": "Design a high-integrity logging architecture that meets aerospace safety standards. System must handle millisecond-precision event logs for carrier-based landing maneuvers.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "compliance",
+      "avionics",
+      "cpp"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-04-16T08:00:00Z"
+  },
+  {
+    "key": "TEST-262",
+    "summary": "Develop Python tool for flight-log compression and S3 archival",
+    "description": "Build a CLI utility to compress binary telemetry logs and upload them to S3. Support metadata extraction for quick retrieval via the mission management dashboard.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "python",
+      "infrastructure",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2026-01-10T10:00:00Z",
+    "resolved_at": "2026-01-15T12:00:00Z"
+  },
+  {
+    "key": "TEST-263",
+    "summary": "Fix broken Axios interceptor for JWT refresh in mission backend",
+    "description": "The dashboard is losing connection during long flights due to intermittent token refresh failures. Debug the interceptor logic and implement a more robust retry strategy.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "security",
+      "debugging"
+    ],
+    "story_points": 2,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-15T11:00:00Z",
+    "resolved_at": "2026-03-18T10:00:00Z"
+  },
+  {
+    "key": "TEST-264",
+    "summary": "Implement Redux state for UAV laser designator safety locks",
+    "description": "Create a secure state management layer to handle safety interlocks for the laser system. UI must reflect real-time confirmation of altitude and attitude before allowing firing commands.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "react",
+      "redux",
+      "security"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-07-20T09:00:00Z",
+    "resolved_at": "2025-08-01T15:00:00Z"
+  },
+  {
+    "key": "TEST-265",
+    "summary": "Optimize Python Imagery Mosaic Generator using multiprocessing",
+    "description": "The imagery generator is too slow for 4K video frames. Implement a process pool to parallelize frame tiling, targeting a 50% performance improvement.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "performance",
+      "video"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2025-04-10T14:00:00Z",
+    "resolved_at": "2025-04-20T09:00:00Z"
+  },
+  {
+    "key": "TEST-266",
+    "summary": "Design encrypted communication protocol for Beyond Line of Sight (BLOS)",
+    "description": "Develop a secure communication wrapper that adds encryption to MAVLink packets without increasing latency beyond the 1-second SATCOM threshold.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "security",
+      "satcom"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-25T08:00:00Z"
+  },
+  {
+    "key": "TEST-267",
+    "summary": "Develop React component for Electronic Warfare (EW) power levels",
+    "description": "Build a real-time monitor for the EW payload showing active frequency bands and power consumption. Component must show visual alerts if aircraft power limits are exceeded.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "react",
+      "sigint",
+      "frontend"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-30T11:00:00Z"
+  },
+  {
+    "key": "TEST-268",
+    "summary": "Implement Python logic for automated swarm de-confliction",
+    "description": "Create a service to monitor swarm telemetry and issue avoidance commands if UAVs enter critical proximity. Use potential field algorithms for non-conflicting headings.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2025-09-01T09:00:00Z",
+    "resolved_at": "2025-10-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-269",
+    "summary": "Optimize PostgreSQL query for regional No-Fly Zone (NFZ) lookups",
+    "description": "Improve performance for NFZ intersection checks. Implement GiST indexing on the geometry columns and refactor the PostGIS 'ST_Intersects' query for bulk mission uploads.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "postgresql",
+      "postgis",
+      "performance"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-08-10T10:00:00Z",
+    "resolved_at": "2025-08-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-270",
+    "summary": "Implement Redux state for automated TB3 'Deck-Pitch' compensation",
+    "description": "During carrier landings, the GCS must receive real-time deck movement data. UI must show vertical distance between the tail-hook and the moving deck, accounting for ship pitch and heave.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "redux",
+      "avionics"
+    ],
+    "story_points": 13,
+    "assignee": "dev_testing",
+    "created_at": "2026-04-17T09:00:00Z"
+  },
+  {
+    "key": "TEST-271",
+    "summary": "Architect distributed target recognition layer using Kubernetes and YOLOv10",
+    "description": "Design an auto-scaling cluster to process mission video feeds for target recognition. System must handle 50+ concurrent 1080p streams and perform inference with sub-100ms latency.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "kubernetes",
+      "ai"
+    ],
+    "story_points": 13,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-20T08:00:00Z"
+  },
+  {
+    "key": "TEST-272",
+    "summary": "Fix broken React build in Jenkins pipeline",
+    "description": "The GCS frontend build is failing due to a linting error in a newly added telemetry component. Fix the linting issues and ensure the CI/CD pipeline passes before the next sprint.",
+    "issuetype": "Bug",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "infrastructure",
+      "jenkins"
+    ],
+    "story_points": 2,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-28T14:00:00Z",
+    "resolved_at": "2026-03-30T10:00:00Z"
+  },
+  {
+    "key": "TEST-273",
+    "summary": "Architect fault-tolerant telemetry ingestion using NATS JetStream",
+    "description": "Design a highly available telemetry ingestion pipeline using NATS JetStream. System must guarantee 'at-least-once' delivery for flight-critical telemetry during server failures.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "To Do",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "nats"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2026-05-01T08:00:00Z"
+  },
+  {
+    "key": "TEST-274",
+    "summary": "Implement Python logic for mission playback feature",
+    "description": "Create a service that can 'replay' a mission log file into the GCS as if it were a live flight. Must support scrubbing and variable speed control (2x, 4x, etc.).",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "telemetry",
+      "training"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2025-07-10T10:00:00Z",
+    "resolved_at": "2025-07-25T16:00:00Z"
+  },
+  {
+    "key": "TEST-275",
+    "summary": "Fix GCS dashboard layout on high-resolution monitors",
+    "description": "The telemetry widget grid is misaligned on 4K monitors. Adjust the CSS Flexbox settings and ensure widgets scale proportionally without overlapping.",
+    "issuetype": "Bug",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 2,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-05T13:00:00Z",
+    "resolved_at": "2026-02-10T10:00:00Z"
+  },
+  {
+    "key": "TEST-276",
+    "summary": "Integrate real-time weather radar overlay using WebGL",
+    "description": "Operators need localized weather data during missions. Integrate weather radar API and render as a low-latency WebGL layer on the GCS map with dynamic opacity.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "webgl",
+      "geospatial",
+      "frontend"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-20T09:00:00Z"
+  },
+  {
+    "key": "TEST-277",
+    "summary": "Develop React component for monitoring SATCOM antenna 'Pointing Error'",
+    "description": "Visualize mechanical deviation of the satellite tracking unit. If pointing error exceeds 0.5 degrees, show 'Link Stability Warning' to the operator.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "satcom",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-01-15T09:00:00Z",
+    "resolved_at": "2026-02-10T14:00:00Z"
+  },
+  {
+    "key": "TEST-278",
+    "summary": "Optimize Python serial driver for TB3 tail-hook sensors",
+    "description": "Tail-hook sensor sends data at 200Hz during landing. Refactor serial interface to use a dedicated thread with a ring buffer to prevent packet loss during wire engagement.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "Done",
+    "labels": [
+      "python",
+      "performance",
+      "avionics"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-01-10T09:00:00Z",
+    "resolved_at": "2026-02-05T12:00:00Z"
+  },
+  {
+    "key": "TEST-279",
+    "summary": "Architect distributed mission planning engine for long-range sorties",
+    "description": "Design a pathfinding engine that can distribute route calculations across multiple nodes. Must support wind-vector optimization and fuel calculations for 24-hour missions.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "algorithms",
+      "python"
+    ],
+    "story_points": 13,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-22T10:00:00Z"
+  },
+  {
+    "key": "TEST-280",
+    "summary": "Fix broken React map markers for swarm follower UAVs",
+    "description": "In swarm view, follower UAVs are appearing with wrong icon color. Fix conditional rendering logic in 'UavMarker' component and verify Redux state selectors.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "debugging",
+      "swarm"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-20T11:00:00Z",
+    "resolved_at": "2026-03-25T17:00:00Z"
+  },
+  {
+    "key": "TEST-281",
+    "summary": "Develop Python script for automated TB3 catapult-launch simulation",
+    "description": "Simulate high-G environment of catapult launch. Verify flight control algorithms correctly suppress oscillation in pitch-axis during rapid acceleration.",
+    "issuetype": "Task",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "python",
+      "simulation",
+      "avionics"
+    ],
+    "story_points": 8,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-25T09:00:00Z"
+  },
+  {
+    "key": "TEST-282",
+    "summary": "Refactor SQLAlchemy models for Akıncı-D engine telemetry sharding",
+    "description": "New variant adds engine sensors. Refactor schema to shard engine telemetry by UAV-Type to prevent the main telemetry table from becoming too sparse.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "sqlalchemy",
+      "postgresql",
+      "database"
+    ],
+    "story_points": 5,
+    "assignee": "dev_lead",
+    "created_at": "2026-02-05T14:00:00Z",
+    "resolved_at": "2026-02-15T09:00:00Z"
+  },
+  {
+    "key": "TEST-283",
+    "summary": "Integrate 3D Terrain Data (SRTM) into GCS Map using PostGIS",
+    "description": "Mission planner needs elevation data to prevent geofence violations. Integrate NASA SRTM data into custom map server using optimized spatial indexing.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "In Progress",
+    "labels": [
+      "postgis",
+      "geospatial",
+      "postgresql"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-22T09:00:00Z"
+  },
+  {
+    "key": "TEST-284",
+    "summary": "Fix React re-render bug in payload control panel",
+    "description": "Adjusting camera gimbal is causing entire UI to freeze for 200ms. Implement 'useMemo' and 'React.memo' to isolate re-renders in the gimbal component.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "performance",
+      "frontend"
+    ],
+    "story_points": 3,
+    "assignee": "dev_hardware",
+    "created_at": "2026-02-15T09:00:00Z",
+    "resolved_at": "2026-02-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-285",
+    "summary": "Implement Python script for automated flight data extraction for AI training",
+    "description": "Create tool to extract mission segments (e.g., successful tracking) from database. Use script to generate datasets for next-gen computer vision models.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "ai",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_testing",
+    "created_at": "2026-01-20T09:00:00Z",
+    "resolved_at": "2026-01-30T14:00:00Z"
+  },
+  {
+    "key": "TEST-286",
+    "summary": "Develop React component for MAVLink packet throughput monitoring",
+    "description": "Build diagnostic panel to monitor real-time packet loss and latency for MAVLink streams. Component must use WebSockets and display rolling link history.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Review",
+    "labels": [
+      "react",
+      "websocket",
+      "telemetry"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2026-03-22T14:00:00Z"
+  },
+  {
+    "key": "TEST-287",
+    "summary": "Fix GCS WebSocket disconnects in high-latency environments",
+    "description": "Drone at edge of radio link causing WebSocket drops. Implement robust heartbeat and reconnection logic with exponential backoff in the React frontend.",
+    "issuetype": "Bug",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "websocket",
+      "react",
+      "reliability"
+    ],
+    "story_points": 8,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-30T10:00:00Z"
+  },
+  {
+    "key": "TEST-288",
+    "summary": "Implement Python logic for automated swarm formation planning",
+    "description": "Create service that generates optimal formation paths based on mission objectives. Account for individual UAV fuel constraints and communication ranges.",
+    "issuetype": "Story",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "algorithms",
+      "swarm"
+    ],
+    "story_points": 8,
+    "assignee": "dev_gcs",
+    "created_at": "2025-08-01T10:00:00Z",
+    "resolved_at": "2025-08-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-289",
+    "summary": "Integrate AI Vision target classification into GCS Video Stream",
+    "description": "Onboard system now supports 50+ classes. Update GCS overlay to display classification label and confidence with optimized React rendering.",
+    "issuetype": "Story",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "ai",
+      "react",
+      "video"
+    ],
+    "story_points": 13,
+    "assignee": "dev_hardware",
+    "created_at": "2026-03-20T08:00:00Z"
+  },
+  {
+    "key": "TEST-290",
+    "summary": "Develop React dashboard for TB2 fuel management",
+    "description": "Build GCS dashboard monitoring fuel flow and endurance. Include visual 'Safe Return' radius on map based on fuel levels and wind data.",
+    "issuetype": "Story",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "algorithms"
+    ],
+    "story_points": 8,
+    "assignee": "dev_testing",
+    "created_at": "2025-12-10T09:00:00Z",
+    "resolved_at": "2026-01-10T15:00:00Z"
+  },
+  {
+    "key": "TEST-291",
+    "summary": "Refactor FastAPI auth to support Hardware Security Keys (FIDO2)",
+    "description": "Enhance pilot security by implementing FIDO2 support in FastAPI auth service. Update React frontend to handle WebAuthn challenges.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "Done",
+    "labels": [
+      "security",
+      "fastapi",
+      "webauthn"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2025-12-01T10:00:00Z",
+    "resolved_at": "2025-12-15T14:00:00Z"
+  },
+  {
+    "key": "TEST-292",
+    "summary": "Implement Redux state for GCS Mission Control layout customization",
+    "description": "Allow operators to rearrange telemetry widgets. Save custom layout in Redux and persist via backend API with 'Reset to Default' support.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "react",
+      "redux",
+      "ux"
+    ],
+    "story_points": 3,
+    "assignee": "dev_lead",
+    "created_at": "2026-02-10T10:00:00Z",
+    "resolved_at": "2026-02-20T16:00:00Z"
+  },
+  {
+    "key": "TEST-293",
+    "summary": "Architect failover cluster for mission-critical Redis cache",
+    "description": "Telemetry must not be lost due to Redis crash. Design Sentinel cluster across nodes to ensure high availability for Python asyncio client.",
+    "issuetype": "Epic",
+    "priority": "Highest",
+    "status": "In Progress",
+    "labels": [
+      "architecture",
+      "infrastructure",
+      "redis"
+    ],
+    "story_points": 13,
+    "assignee": "dev_gcs",
+    "created_at": "2026-03-27T09:00:00Z"
+  },
+  {
+    "key": "TEST-294",
+    "summary": "Implement Python script for mission database backup to S3",
+    "description": "Automate nightly backup of mission plans. Script must encrypt backups and generate verification reports for IT compliance.",
+    "issuetype": "Task",
+    "priority": "Low",
+    "status": "Done",
+    "labels": [
+      "python",
+      "infrastructure",
+      "backup"
+    ],
+    "story_points": 3,
+    "assignee": "dev_hardware",
+    "created_at": "2025-04-10T10:00:00Z",
+    "resolved_at": "2025-04-15T16:00:00Z"
+  },
+  {
+    "key": "TEST-295",
+    "summary": "Fix React state sync issue between map and mission list",
+    "description": "Deleting waypoint not removing marker until refresh. Fix state synchronization between sibling components in the React tree.",
+    "issuetype": "Bug",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "debugging"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-03-20T11:00:00Z",
+    "resolved_at": "2026-03-22T17:00:00Z"
+  },
+  {
+    "key": "TEST-296",
+    "summary": "Develop Python tool for mission log anonymization",
+    "description": "Before sharing logs, sensitive data (GPS home, pilot IDs) must be scrubbed. Implement tool identifying fields for anonymization in JSON/CSV exports.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "python",
+      "security",
+      "data"
+    ],
+    "story_points": 5,
+    "assignee": "dev_ai",
+    "created_at": "2025-11-10T09:00:00Z",
+    "resolved_at": "2025-11-20T14:00:00Z"
+  },
+  {
+    "key": "TEST-297",
+    "summary": "Fix CSS hover effects on GCS mission selection menu",
+    "description": "Hover color too light for bright cockpits. Increase contrast ratio in CSS theme to ensure clear mission selection visibility.",
+    "issuetype": "Bug",
+    "priority": "Lowest",
+    "status": "Done",
+    "labels": [
+      "frontend",
+      "css",
+      "react"
+    ],
+    "story_points": 1,
+    "assignee": "dev_lead",
+    "created_at": "2026-03-25T13:00:00Z",
+    "resolved_at": "2026-03-27T10:00:00Z"
+  },
+  {
+    "key": "TEST-298",
+    "summary": "Develop React-based 'Flight Horizon' indicator using Canvas API",
+    "description": "Replace SVG-based horizon indicator with high-performance Canvas implementation to achieve smooth 60FPS refresh for attitude telemetry.",
+    "issuetype": "Task",
+    "priority": "High",
+    "status": "To Do",
+    "labels": [
+      "react",
+      "canvas",
+      "frontend"
+    ],
+    "story_points": 5,
+    "assignee": "dev_gcs",
+    "created_at": "2026-04-17T11:00:00Z"
+  },
+  {
+    "key": "TEST-299",
+    "summary": "Implement semantic search for mission reports using pgvector",
+    "description": "Build mission log retrieval tool using pgvector to find similar flight incidents. Essential for clustering anomalous telemetry patterns across the fleet.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "To Do",
+    "labels": [
+      "python",
+      "pgvector",
+      "database"
+    ],
+    "story_points": 5,
+    "assignee": "dev_hardware",
+    "created_at": "2026-04-17T11:30:00Z"
+  },
+  {
+    "key": "TEST-300",
+    "summary": "Update GCS UI for Akıncı-C variant specific engine monitoring",
+    "description": "Akıncı-C has new engine requirements. Update React dashboard gauges for fuel flow and exhaust gas temperature based on new telemetry IDs.",
+    "issuetype": "Task",
+    "priority": "Medium",
+    "status": "Done",
+    "labels": [
+      "react",
+      "frontend",
+      "telemetry"
+    ],
+    "story_points": 3,
+    "assignee": "dev_testing",
+    "created_at": "2026-02-05T14:00:00Z",
+    "resolved_at": "2026-02-15T09:00:00Z"
+  }
+]

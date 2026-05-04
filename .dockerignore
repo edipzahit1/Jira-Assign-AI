@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+__pycache__
+*.pyc
+
+# Database & secrets
+*.db
+
+# Build artifacts
+dist
+build
+.vite
+
+# IDE & OS
+.vscode
+.idea
+*.swp
+.DS_Store
+Thumbs.db
+
+# Docs & tests
+documentation_files
+*.txt
+crash_debug.txt
+
+# Git
+.git
+.gitignore

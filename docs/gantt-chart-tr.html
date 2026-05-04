@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Mimarisi - Gantt Çizelgesi v2</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+
+      --c-research: #6366f1;
+      --c-arch: #06b6d4;
+      --c-backend: #10b981;
+      --c-nlp: #8b5cf6;
+      --c-frontend: #0ea5e9;
+      --c-testing: #f43f5e;
+      --c-enterprise: #f59e0b;
+      --c-docs: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      padding: 40px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    h1 {
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .meta {
+      text-align: right;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .meta b {
+      color: var(--text-main);
+    }
+
+    .gantt-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      height: 80vh;
+    }
+
+    .gantt-scroll {
+      overflow: auto;
+      height: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 2200px;
+    }
+
+    /* Headers */
+    thead th {
+      padding: 12px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--border);
+      background: #fbfbfb;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .task-col {
+      width: 280px;
+      text-align: left;
+      padding-left: 24px;
+      position: sticky;
+      left: 0;
+      background: #fbfbfb;
+      z-index: 30;
+      border-right: 2px solid var(--border);
+    }
+
+    .week-header {
+      border-left: 1px solid var(--border);
+    }
+
+    /* Rows */
+    tbody tr {
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    td {
+      height: 48px;
+      position: relative;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .task-name-cell {
+      padding-left: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      position: sticky;
+      left: 0;
+      background: white;
+      z-index: 10;
+      border-right: 1px solid var(--border);
+    }
+
+    .task-desc {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* Bars */
+    .bar {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 24px;
+      border-radius: 6px;
+      z-index: 2;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
+      border-radius: inherit;
+    }
+
+    /* Column grid lines */
+    .grid-cell {
+      border-left: 1px solid #f1f5f9;
+      width: 60px;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    /* Milestones */
+    .milestone {
+      width: 12px;
+      height: 12px;
+      background: #0f172a;
+      transform: rotate(45deg);
+      margin: 0 auto;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .milestone-label {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%) rotate(-45deg);
+      white-space: nowrap;
+      font-size: 10px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .section-header td {
+      background: #f1f5f9;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #475569;
+      height: 32px;
+      position: sticky;
+      top: 40px;
+      z-index: 15;
+      border-bottom: 2px solid var(--border);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Jira Assign AI Proje Yol Haritası</h1>
+        <div class="subtitle">Sistem Ölçeklendirme ve Kurumsal Entegrasyon Zaman Çizelgesi (Şub - May 2026)</div>
+      </div>
+      <div class="meta">
+        Süre: <b>12 Hafta</b> &nbsp; | &nbsp;
+        Bitiş Tarihi: <b>15 Mayıs 2026</b><br>
+        Geliştirici: <b>Edip Zahit Güney</b>
+      </div>
+    </header>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-research)"></div>Planlama
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-arch)"></div>Mimari
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-backend)"></div>Backend
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-nlp)"></div>NLP / Yapay Zeka
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-frontend)"></div>Frontend
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-testing)"></div>QA & Test
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-enterprise)"></div>Ölçeklendirme
+      </div>
+      <div class="legend-item">
+        <div class="dot" style="background:var(--c-docs)"></div>Dokümantasyon
+      </div>
+    </div>
+
+    <div class="gantt-card">
+      <div class="gantt-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="task-col">Görevler & Kilometre Taşları</th>
+              <th colspan="2" class="week-header">1. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">20 Şub - 26 Şub</span></th>
+              <th colspan="2" class="week-header">2. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">27 Şub - 5 Mar</span></th>
+              <th colspan="2" class="week-header">3. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">6 Mar - 12 Mar</span></th>
+              <th colspan="2" class="week-header">4. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">13 Mar - 19 Mar</span></th>
+              <th colspan="2" class="week-header">5. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">20 Mar - 26 Mar</span></th>
+              <th colspan="2" class="week-header">6. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">27 Mar - 2 Nis</span></th>
+              <th colspan="2" class="week-header">7. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">3 Nis - 9 Nis</span></th>
+              <th colspan="2" class="week-header">8. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">10 Nis - 16 Nis</span></th>
+              <th colspan="2" class="week-header">9. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">17 Nis - 23 Nis</span></th>
+              <th colspan="2" class="week-header">10. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">24 Nis - 30 Nis</span></th>
+              <th colspan="2" class="week-header">11. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">1 May - 7 May</span></th>
+              <th colspan="2" class="week-header">12. Hafta<br><span
+                  style="font-size:9px; font-weight:400; text-transform:none">8 May - 15 May</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-header">
+              <td colspan="25">Aşama 01 & 02: Çekirdek Yapı ve Yapay Zeka</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">Jira API ve Veri Araştırması<span class="task-desc">Erişim Kapsamı ve SDK
+                  Analizi</span></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-research); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Backend ve DB Altyapısı<span class="task-desc">FastAPI ve SQLAlchemy
+                  Kurulumu</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-arch); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">NLP Vektör Mantığı<span class="task-desc">Model Entegrasyonu ve Test</span>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-nlp); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">5-Faktörlü Puanlama Motoru<span class="task-desc">Kapasite ve Karmaşıklık
+                  Puanlama</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 300%; background: var(--c-backend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Kimlik Şifreleme<span class="task-desc">AES (Fernet) Veri Güvenliği</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-backend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Aşama 03: Kullanıcı Deneyimi ve MVP</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">React Dashboard Geliştirme<span class="task-desc">İnteraktif Öneri
+                  Arayüzü</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 300%; background: var(--c-frontend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">MVP Pilot Entegrasyonu<span class="task-desc">Jira Gerçek Dünya Testleri</span>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell desktop-marker">
+                <div class="bar" style="width: 200%; background: var(--c-testing); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Aşama 04: Üretim Ortamı ve Güvenlik</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">pgvector Ölçeklendirmesi<span class="task-desc">Büyük Veri için Postgres
+                  Göçü</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-enterprise); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Çerez Güvenliği Sertleştirme<span class="task-desc">XSS ve CSRF Koruması</span>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-arch); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Üretim Gizli Veri Yönetimi<span class="task-desc">Çevresel Değişken
+                  Doğrulama</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-backend); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Nginx Proxy ve Konteynerizasyon<span class="task-desc">HSTS, SSL ve Docker
+                  Yapılandırması</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-arch); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Aşama 05: Dokümantasyon ve Final</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">Teknik ve Kullanıcı Kılavuzları<span class="task-desc">Sistem Akışı ve Dev
+                  Notları</span></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 200%; background: var(--c-docs); left: 10px;"></div>
+              </td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Final Teslimat ve Demo<span class="task-desc">Proje Kapanışı ve Sunum</span>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="bar" style="width: 100%; background: var(--c-docs); left: 10px;"></div>
+              </td>
+            </tr>
+
+
+            <tr class="section-header">
+              <td colspan="25">Kilometre Taşları</td>
+            </tr>
+            <tr>
+              <td class="task-name-cell">MVP Teslimatı</td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="milestone" style="background:#4f46e5">
+                  <div class="milestone-label" style="color:#4f46e5">MVP TAMAM (9 Nis)</div>
+                </div>
+              </td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+            </tr>
+
+            <tr>
+              <td class="task-name-cell">Final Teslimat</td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <div class="milestone" style="background:#10b981">
+                  <div class="milestone-label" style="color:#10b981">FİNAL (15 May)</div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
